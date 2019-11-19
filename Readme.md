@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Наталья Панова](https://up.htmlacademy.ru/ecmascript/10/user/202512).
-* Наставник: `Неизвестно`.
+* Наставник: `Без наставника`.
 
 ---
 
