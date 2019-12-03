@@ -6,6 +6,9 @@ import getCard from "./components/card";
 import getFullCard from "./components/full-card";
 import getButtonShowMore from "./components/button-show-more";
 import getUserRating from "./components/user-rating";
+import {getMovie} from "./mock/movie";
+
+const mocksData = [...Array(5)].map(getMovie);
 
 const render = (container, position, template) => {
   container.insertAdjacentHTML(position, template);
@@ -14,22 +17,25 @@ const render = (container, position, template) => {
 const movieSectionData = [
   {
     title: `All movies. Upcoming`,
-    hasModificator: false
+    hasModifier: false,
+    movies: mocksData
   },
   {
     title: `Top rated`,
-    hasModificator: true
+    hasModifier: true,
+    movies: mocksData.filter((it) => parseInt(it.rating, 10) > 5)
   },
   {
     title: `Most commented`,
-    hasModificator: true
+    hasModifier: true,
+    movies: mocksData.filter((it) => it.comments.length > 5)
   }
 ];
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const bodyElement = document.querySelector(`body`);
-render(bodyElement, `beforeend`, getFullCard());
+mocksData.forEach((mock) => render(bodyElement, `beforeend`, getFullCard(mock)));
 render(headerElement, `beforeend`, getUserRating());
 render(mainElement, `afterbegin`, getMenu());
 render(mainElement, `beforeend`, getSort());
@@ -37,12 +43,16 @@ render(mainElement, `beforeend`, getMovieContainer());
 const movieSection = mainElement.querySelector(`.films`);
 
 
-render(movieSection, `beforeend`, movieSectionData.map((it) => getMovieSection(it.title, it.hasModificator)).join(``));
+movieSectionData.forEach((it) => {
+  if (it.movies.length > 0) {
+    render(movieSection, `beforeend`, getMovieSection(it.title, it.hasModifier));
+  }
+});
+
 const totalFilmsSection = movieSection.querySelector(`.films-list`);
 render(totalFilmsSection, `beforeend`, getButtonShowMore());
 const totalFilmsContainer = totalFilmsSection.querySelector(`.films-list__container`);
-render(totalFilmsContainer, `beforeend`, new Array(5).fill(getCard()).join(``));
+render(totalFilmsContainer, `beforeend`, mocksData.map(getCard).join(``));
 const filmsContainersExtra = movieSection.querySelectorAll(`.films-list--extra .films-list__container`);
 
-
-filmsContainersExtra.forEach((el) => render(el, `beforeend`, new Array(2).fill(getCard()).join(``)));
+movieSectionData.filter((it) => it.hasModifier).forEach(({movies}, index) => render(filmsContainersExtra[index], `beforeend`, movies.map(getCard).join(``)));
