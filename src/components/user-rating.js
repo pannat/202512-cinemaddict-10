@@ -10,7 +10,7 @@ const getUserRating = (count) => {
     <p class="profile__rating">${rank.get(true)}</p>
     <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
   </section>`;
-}
+};
 
 
 export default getUserRating;

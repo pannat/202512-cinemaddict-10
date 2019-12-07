@@ -7,7 +7,6 @@ import getFullCard from "./components/full-card";
 import getButtonShowMore from "./components/button-show-more";
 import getUserRating from "./components/user-rating";
 import {getMovie} from "./mock/movie";
-import {generateFilters} from "./mock/menu";
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
@@ -55,7 +54,7 @@ const movieSectionData = [
 
 let showingMoviesCount = SHOWING_MOVIES_COUNT_ON_START;
 
-// mocksData.forEach((mock) => render(bodyElement, `beforeend`, getFullCard(mock)));
+mocksData.forEach((mock) => render(bodyElement, `beforeend`, getFullCard(mock)));
 render(headerElement, `beforeend`, getUserRating(filters.find((it) => it.name === `watchlist`).count));
 
 render(mainElement, `afterbegin`, getMenu(filters));
