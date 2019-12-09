@@ -57,7 +57,6 @@ const renderMovieCard = (container, data) => {
   render(container, new CardComponent(data).element, RenderPosition.BEFOREEND);
 };
 
-// mocksData.forEach((mock) => render(bodyElement, `beforeend`, getFullCard(mock)));
 const userRatingComponent = new UserRatingComponent(totalAlreadyWatchedMovies);
 render(headerElement, userRatingComponent.element, RenderPosition.BEFOREEND);
 
@@ -82,7 +81,35 @@ const buttonShowMoreComponent = new ButtonShowMoreComponent();
 render(totalFilmsSection, buttonShowMoreComponent.element, RenderPosition.BEFOREEND);
 const totalFilmsContainer = totalFilmsSection.querySelector(`.films-list__container`);
 
-movieSectionData.find((it) => !it.hasModifier).movies.forEach((movie) => renderMovieCard(totalFilmsContainer, movie));
+movieSectionData.find((it) => !it.hasModifier).movies.forEach((movie) => {
+  const cardComponent = new CardComponent(movie);
+  const posterCardElement = cardComponent.element.querySelector(`.film-card__poster`);
+  const titleCardElement = cardComponent.element.querySelector(`.film-card__title`);
+  const commentsCardElement = cardComponent.element.querySelector(`.film-card__comments`);
+
+  const fullCardComponent = new FullCardComponent(movie);
+  const closeFullCardElement = fullCardComponent.element.querySelector(`.film-details__close-btn`);
+
+  const closeFullCard = () => {
+    fullCardComponent.element.remove();
+  };
+
+  const openFullCard = () => {
+    closeFullCardElement.addEventListener(`click`, closeFullCard);
+
+    // window.addEventListener(`keydown`, (evt) => {
+    //   if (evt.key === 'ESC')
+    // })
+
+    render(bodyElement, fullCardComponent.element, RenderPosition.BEFOREEND);
+  };
+
+  posterCardElement.addEventListener(`click`, openFullCard);
+  titleCardElement.addEventListener(`click`, openFullCard);
+  commentsCardElement.addEventListener(`click`, openFullCard);
+
+  render(totalFilmsContainer, cardComponent.element, RenderPosition.BEFOREEND);
+});
 const filmsContainersExtra = movieMainContainerComponent.element.querySelectorAll(`.films-list--extra .films-list__container`);
 
 movieSectionData.filter((it) => it.hasModifier && it.movies).forEach(({movies}, index) => renderMovieCard(filmsContainersExtra[index], movies));
