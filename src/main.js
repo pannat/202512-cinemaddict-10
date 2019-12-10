@@ -1,12 +1,13 @@
-import getMenu from "./components/menu";
-import getSort from "./components/sort";
-import getMovieContainer from "./components/movie-main-container";
-import getMovieSection from "./components/movie-section";
-import getCard from "./components/card";
-import getFullCard from "./components/full-card";
-import getButtonShowMore from "./components/button-show-more";
-import getUserRating from "./components/user-rating";
+import MenuComponent from "./components/menu";
+import SortComponent from "./components/sort";
+import MovieMainContainerComponent from "./components/movie-main-container";
+import MovieSectionComponent from "./components/movie-section";
+import CardComponent from "./components/card";
+import FullCardComponent from "./components/full-card";
+import ButtonShowMoreComponent from "./components/button-show-more";
+import UserRatingComponent from "./components/user-rating";
 import {getMovie} from "./mock/movie";
+import {RenderPosition, Key, render} from "./utils";
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
@@ -14,10 +15,6 @@ const bodyElement = document.querySelector(`body`);
 const MOVIES_COUNT = 11;
 const SHOWING_MOVIES_COUNT_ON_START = 5;
 const SHOWING_MOVIES_COUNT_BY_BUTTON = 5;
-
-const render = (container, position, template) => {
-  container.insertAdjacentHTML(position, template);
-};
 
 const mocksData = [...Array(MOVIES_COUNT)].map(getMovie);
 
@@ -54,28 +51,75 @@ const movieSectionData = [
 
 let showingMoviesCount = SHOWING_MOVIES_COUNT_ON_START;
 
-mocksData.forEach((mock) => render(bodyElement, `beforeend`, getFullCard(mock)));
-render(headerElement, `beforeend`, getUserRating(filters.find((it) => it.name === `watchlist`).count));
+const totalAlreadyWatchedMovies = filters.find((it) => it.name === `history`).count;
 
-render(mainElement, `afterbegin`, getMenu(filters));
-render(mainElement, `beforeend`, getSort());
-render(mainElement, `beforeend`, getMovieContainer());
-const movieSection = mainElement.querySelector(`.films`);
+
+const renderMovieCard = (container, data) => {
+  const cardComponent = new CardComponent(data);
+  const posterCardElement = cardComponent.element.querySelector(`.film-card__poster`);
+  const titleCardElement = cardComponent.element.querySelector(`.film-card__title`);
+  const commentsCardElement = cardComponent.element.querySelector(`.film-card__comments`);
+
+  const fullCardComponent = new FullCardComponent(data);
+  const closeFullCardElement = fullCardComponent.element.querySelector(`.film-details__close-btn`);
+
+  const closeFullCard = () => {
+    fullCardComponent.element.remove();
+  };
+
+  const onKeydownPress = (evt) => {
+    if (evt.key === Key.ESCAPE || evt.key === Key.ESCAPE_IE) {
+      closeFullCard();
+    }
+    window.removeEventListener(`keydown`, onKeydownPress);
+  };
+
+  const openFullCard = () => {
+    closeFullCardElement.addEventListener(`click`, closeFullCard);
+    window.addEventListener(`keydown`, onKeydownPress);
+
+    render(bodyElement, fullCardComponent.element, RenderPosition.BEFOREEND);
+  };
+
+  posterCardElement.addEventListener(`click`, openFullCard);
+  titleCardElement.addEventListener(`click`, openFullCard);
+  commentsCardElement.addEventListener(`click`, openFullCard);
+
+  render(container, cardComponent.element, RenderPosition.BEFOREEND);
+};
+
+const userRatingComponent = new UserRatingComponent(totalAlreadyWatchedMovies);
+render(headerElement, userRatingComponent.element, RenderPosition.BEFOREEND);
+
+const menuComponent = new MenuComponent(filters);
+render(mainElement, menuComponent.element, RenderPosition.AFTERBEGIN);
+
+const sortComponent = new SortComponent();
+render(mainElement, sortComponent.element, RenderPosition.BEFOREEND);
+
+const movieMainContainerComponent = new MovieMainContainerComponent();
+render(mainElement, movieMainContainerComponent.element, RenderPosition.BEFOREEND);
 
 
 movieSectionData.forEach((it) => {
   if (it.movies) {
-    render(movieSection, `beforeend`, getMovieSection(it.title, it.hasModifier));
+    render(movieMainContainerComponent.element, new MovieSectionComponent(it.title, it.hasModifier).element, RenderPosition.BEFOREEND);
   }
 });
 
-const totalFilmsSection = movieSection.querySelector(`.films-list`);
-render(totalFilmsSection, `beforeend`, getButtonShowMore());
+const totalFilmsSection = movieMainContainerComponent.element.querySelector(`.films-list`);
+const buttonShowMoreComponent = new ButtonShowMoreComponent();
+render(totalFilmsSection, buttonShowMoreComponent.element, RenderPosition.BEFOREEND);
 const totalFilmsContainer = totalFilmsSection.querySelector(`.films-list__container`);
-render(totalFilmsContainer, `beforeend`, movieSectionData.find((it) => !it.hasModifier).movies.map(getCard).join(``));
-const filmsContainersExtra = movieSection.querySelectorAll(`.films-list--extra .films-list__container`);
 
-movieSectionData.filter((it) => it.hasModifier && it.movies).forEach(({movies}, index) => render(filmsContainersExtra[index], `beforeend`, getCard(movies)));
+movieSectionData.find((it) => !it.hasModifier).movies.forEach((movie) => {
+  renderMovieCard(totalFilmsContainer, movie);
+});
+const filmsContainersExtra = movieMainContainerComponent.element.querySelectorAll(`.films-list--extra .films-list__container`);
+
+movieSectionData.filter((it) => it.hasModifier && it.movies).forEach(({movies}, index) => {
+  renderMovieCard(filmsContainersExtra[index], movies);
+});
 const buttonShowMore = totalFilmsSection.querySelector(`.films-list__show-more`);
 
 buttonShowMore.addEventListener(`click`, () => {
@@ -83,7 +127,7 @@ buttonShowMore.addEventListener(`click`, () => {
   showingMoviesCount += SHOWING_MOVIES_COUNT_BY_BUTTON;
 
   mocksData.slice(prevMoviesCount, showingMoviesCount).
-    forEach((movie) => render(totalFilmsContainer, `beforeend`, getCard(movie)));
+    forEach((movie) => renderMovieCard(totalFilmsContainer, movie));
 
   if (showingMoviesCount >= mocksData.length) {
     buttonShowMore.remove();
