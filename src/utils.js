@@ -1,5 +1,10 @@
 const capitalizeFirstLetter = (word) => word.charAt(0).toUpperCase() + word.slice(1);
 
+const Key = {
+  ESCAPE_IE: `Escape`,
+  ESCAPE: `Esc`,
+};
+
 const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
@@ -23,5 +28,5 @@ const render = (container, element, place) => {
   }
 };
 
-export {capitalizeFirstLetter, RenderPosition, createElement, render};
+export {capitalizeFirstLetter, RenderPosition, Key, createElement, render};
 

@@ -7,7 +7,7 @@ import FullCardComponent from "./components/full-card";
 import ButtonShowMoreComponent from "./components/button-show-more";
 import UserRatingComponent from "./components/user-rating";
 import {getMovie} from "./mock/movie";
-import {RenderPosition, render} from "./utils";
+import {RenderPosition, Key, render} from "./utils";
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
@@ -53,8 +53,39 @@ let showingMoviesCount = SHOWING_MOVIES_COUNT_ON_START;
 
 const totalAlreadyWatchedMovies = filters.find((it) => it.name === `history`).count;
 
+
 const renderMovieCard = (container, data) => {
-  render(container, new CardComponent(data).element, RenderPosition.BEFOREEND);
+  const cardComponent = new CardComponent(data);
+  const posterCardElement = cardComponent.element.querySelector(`.film-card__poster`);
+  const titleCardElement = cardComponent.element.querySelector(`.film-card__title`);
+  const commentsCardElement = cardComponent.element.querySelector(`.film-card__comments`);
+
+  const fullCardComponent = new FullCardComponent(data);
+  const closeFullCardElement = fullCardComponent.element.querySelector(`.film-details__close-btn`);
+
+  const closeFullCard = () => {
+    fullCardComponent.element.remove();
+  };
+
+  const onKeydownPress = (evt) => {
+    if (evt.key === Key.ESCAPE || evt.key === Key.ESCAPE_IE) {
+      closeFullCard();
+    }
+    window.removeEventListener(`keydown`, onKeydownPress);
+  };
+
+  const openFullCard = () => {
+    closeFullCardElement.addEventListener(`click`, closeFullCard);
+    window.addEventListener(`keydown`, onKeydownPress);
+
+    render(bodyElement, fullCardComponent.element, RenderPosition.BEFOREEND);
+  };
+
+  posterCardElement.addEventListener(`click`, openFullCard);
+  titleCardElement.addEventListener(`click`, openFullCard);
+  commentsCardElement.addEventListener(`click`, openFullCard);
+
+  render(container, cardComponent.element, RenderPosition.BEFOREEND);
 };
 
 const userRatingComponent = new UserRatingComponent(totalAlreadyWatchedMovies);
@@ -82,37 +113,13 @@ render(totalFilmsSection, buttonShowMoreComponent.element, RenderPosition.BEFORE
 const totalFilmsContainer = totalFilmsSection.querySelector(`.films-list__container`);
 
 movieSectionData.find((it) => !it.hasModifier).movies.forEach((movie) => {
-  const cardComponent = new CardComponent(movie);
-  const posterCardElement = cardComponent.element.querySelector(`.film-card__poster`);
-  const titleCardElement = cardComponent.element.querySelector(`.film-card__title`);
-  const commentsCardElement = cardComponent.element.querySelector(`.film-card__comments`);
-
-  const fullCardComponent = new FullCardComponent(movie);
-  const closeFullCardElement = fullCardComponent.element.querySelector(`.film-details__close-btn`);
-
-  const closeFullCard = () => {
-    fullCardComponent.element.remove();
-  };
-
-  const openFullCard = () => {
-    closeFullCardElement.addEventListener(`click`, closeFullCard);
-
-    // window.addEventListener(`keydown`, (evt) => {
-    //   if (evt.key === 'ESC')
-    // })
-
-    render(bodyElement, fullCardComponent.element, RenderPosition.BEFOREEND);
-  };
-
-  posterCardElement.addEventListener(`click`, openFullCard);
-  titleCardElement.addEventListener(`click`, openFullCard);
-  commentsCardElement.addEventListener(`click`, openFullCard);
-
-  render(totalFilmsContainer, cardComponent.element, RenderPosition.BEFOREEND);
+  renderMovieCard(totalFilmsContainer, movie);
 });
 const filmsContainersExtra = movieMainContainerComponent.element.querySelectorAll(`.films-list--extra .films-list__container`);
 
-movieSectionData.filter((it) => it.hasModifier && it.movies).forEach(({movies}, index) => renderMovieCard(filmsContainersExtra[index], movies));
+movieSectionData.filter((it) => it.hasModifier && it.movies).forEach(({movies}, index) => {
+  renderMovieCard(filmsContainersExtra[index], movies);
+});
 const buttonShowMore = totalFilmsSection.querySelector(`.films-list__show-more`);
 
 buttonShowMore.addEventListener(`click`, () => {

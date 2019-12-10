@@ -9,7 +9,7 @@ class Card {
     this._releaseDate = releaseDate;
     this._runtime = runtime;
     this._genres = genres;
-    this._desctiption = description;
+    this._description = description.length > 140 ? `${description.slice(0, 140)}...` : description;
     this._comments = comments;
     this._element = null;
   }
