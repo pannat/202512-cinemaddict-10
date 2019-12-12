@@ -143,4 +143,4 @@ const getMovie = () => (
   }
 );
 
-export {getMovie};
+export {getMovie, getRandomIntegerNumber};

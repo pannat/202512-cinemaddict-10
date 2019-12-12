@@ -6,13 +6,14 @@ import CardComponent from "./components/card";
 import FullCardComponent from "./components/full-card";
 import ButtonShowMoreComponent from "./components/button-show-more";
 import UserRatingComponent from "./components/user-rating";
-import {getMovie} from "./mock/movie";
+import MessageNotMovies from "./components/message-not-movies";
+import {getMovie, getRandomIntegerNumber} from "./mock/movie";
 import {RenderPosition, Key, render} from "./utils";
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const bodyElement = document.querySelector(`body`);
-const MOVIES_COUNT = 11;
+const MOVIES_COUNT = getRandomIntegerNumber(0, 15);
 const SHOWING_MOVIES_COUNT_ON_START = 5;
 const SHOWING_MOVIES_COUNT_BY_BUTTON = 5;
 
@@ -108,13 +109,22 @@ movieSectionData.forEach((it) => {
 });
 
 const totalFilmsSection = movieMainContainerComponent.element.querySelector(`.films-list`);
-const buttonShowMoreComponent = new ButtonShowMoreComponent();
-render(totalFilmsSection, buttonShowMoreComponent.element, RenderPosition.BEFOREEND);
+
 const totalFilmsContainer = totalFilmsSection.querySelector(`.films-list__container`);
 
-movieSectionData.find((it) => !it.hasModifier).movies.forEach((movie) => {
-  renderMovieCard(totalFilmsContainer, movie);
-});
+if (mocksData.length) {
+  movieSectionData.find((it) => !it.hasModifier).movies.forEach((movie) => {
+    renderMovieCard(totalFilmsContainer, movie);
+  });
+  const buttonShowMoreComponent = new ButtonShowMoreComponent();
+  if (mocksData.length > SHOWING_MOVIES_COUNT_BY_BUTTON) {
+    render(totalFilmsSection, buttonShowMoreComponent.element, RenderPosition.BEFOREEND);
+  }
+} else {
+  totalFilmsSection.innerHTML = ``;
+  render(totalFilmsSection, new MessageNotMovies().element, RenderPosition.BEFOREEND);
+}
+
 const filmsContainersExtra = movieMainContainerComponent.element.querySelectorAll(`.films-list--extra .films-list__container`);
 
 movieSectionData.filter((it) => it.hasModifier && it.movies).forEach(({movies}, index) => {
