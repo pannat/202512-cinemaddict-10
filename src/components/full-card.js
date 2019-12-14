@@ -1,7 +1,8 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
-class FullCard {
+class FullCard extends AbstractComponent {
   constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit}) {
+    super();
     this._title = title;
     this._poster = poster;
     this._director = director;
@@ -15,15 +16,6 @@ class FullCard {
     this._description = description;
     this._comments = comments;
     this._ageLimit = ageLimit;
-    this._element = null;
-  }
-
-  get element() {
-    if (this._element === null) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
   }
 
   get template() {
@@ -156,10 +148,6 @@ class FullCard {
     </div>
   </form>
 </section>`;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

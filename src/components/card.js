@@ -1,8 +1,9 @@
 import {capitalizeFirstLetter} from "../utils";
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
-class Card {
+class Card extends AbstractComponent {
   constructor({title, poster, rating, releaseDate, runtime, genres, description, comments}) {
+    super();
     this._title = title;
     this._poster = poster;
     this._rating = rating;
@@ -11,15 +12,6 @@ class Card {
     this._genres = genres;
     this._description = description.length > 140 ? `${description.slice(0, 140)}...` : description;
     this._comments = comments;
-    this._element = null;
-  }
-
-  get element() {
-    if (this._element === null) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
   }
 
   get template() {
@@ -40,10 +32,6 @@ class Card {
             <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
           </form>
         </article>`;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

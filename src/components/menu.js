@@ -1,18 +1,10 @@
 import {capitalizeFirstLetter} from "../utils";
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
-class Menu {
+class Menu extends AbstractComponent {
   constructor(filters) {
+    super();
     this._filters = filters;
-    this._element = null;
-  }
-
-  get element() {
-    if (this._element === null) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
   }
 
   get template() {
@@ -22,10 +14,6 @@ class Menu {
     `).join(``)}
     <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
   </nav>`;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
