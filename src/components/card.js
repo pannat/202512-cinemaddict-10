@@ -33,6 +33,24 @@ class Card extends AbstractComponent {
           </form>
         </article>`;
   }
+
+  setClickHandler(handler) {
+    this._setClickPosterHandler(handler);
+    this._setClickTitleHandler(handler);
+    this._setClickCommentsHandler(handler);
+  }
+
+  _setClickPosterHandler(handler) {
+    this.element.querySelector(`.film-card__poster`).addEventListener(`click`, handler);
+  }
+
+  _setClickTitleHandler(handler) {
+    this.element.querySelector(`.film-card__title`).addEventListener(`click`, handler);
+  }
+
+  _setClickCommentsHandler(handler) {
+    this.element.querySelector(`.film-card__comments`).addEventListener(`click`, handler);
+  }
 }
 
 export default Card;

@@ -57,12 +57,8 @@ const totalAlreadyWatchedMovies = filters.find((it) => it.name === `history`).co
 
 const renderMovieCard = (container, data) => {
   const cardComponent = new CardComponent(data);
-  const posterCardElement = cardComponent.element.querySelector(`.film-card__poster`);
-  const titleCardElement = cardComponent.element.querySelector(`.film-card__title`);
-  const commentsCardElement = cardComponent.element.querySelector(`.film-card__comments`);
-
   const fullCardComponent = new FullCardComponent(data);
-  const closeFullCardElement = fullCardComponent.element.querySelector(`.film-details__close-btn`);
+
 
   const closeFullCard = () => {
     fullCardComponent.element.remove();
@@ -76,15 +72,13 @@ const renderMovieCard = (container, data) => {
   };
 
   const openFullCard = () => {
-    closeFullCardElement.addEventListener(`click`, closeFullCard);
+    fullCardComponent.setClickCloseHandler(closeFullCard);
     window.addEventListener(`keydown`, onKeydownPress);
 
     render(bodyElement, fullCardComponent.element, RenderPosition.BEFOREEND);
   };
 
-  posterCardElement.addEventListener(`click`, openFullCard);
-  titleCardElement.addEventListener(`click`, openFullCard);
-  commentsCardElement.addEventListener(`click`, openFullCard);
+  cardComponent.setClickHandler(openFullCard);
 
   render(container, cardComponent.element, RenderPosition.BEFOREEND);
 };
@@ -119,10 +113,9 @@ if (mocksData.length) {
   const buttonShowMoreComponent = new ButtonShowMoreComponent();
   if (mocksData.length > SHOWING_MOVIES_COUNT_BY_BUTTON) {
 
-    buttonShowMoreComponent.element.addEventListener(`click`, () => {
+    const onClickButtonShowMore = () => {
       const prevMoviesCount = showingMoviesCount;
       showingMoviesCount += SHOWING_MOVIES_COUNT_BY_BUTTON;
-
       mocksData.slice(prevMoviesCount, showingMoviesCount).
       forEach((movie) => renderMovieCard(totalFilmsContainer, movie));
 
@@ -130,8 +123,9 @@ if (mocksData.length) {
         buttonShowMoreComponent.element.remove();
         buttonShowMoreComponent.removeElement();
       }
+    };
 
-    });
+    buttonShowMoreComponent.setClickHandler(onClickButtonShowMore);
     render(totalFilmsSection, buttonShowMoreComponent.element, RenderPosition.BEFOREEND);
   }
 } else {

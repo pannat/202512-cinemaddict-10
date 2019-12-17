@@ -99,7 +99,7 @@ class FullCard extends AbstractComponent {
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._comments.length}</span></h3>
 
         <ul class="film-details__comments-list">
-        
+
         ${this._comments.map((comment) => `<li class="film-details__comment">
             <span class="film-details__comment-emoji">
               <img src="./images/emoji/${comment.emoji}.png" width="55" height="55" alt="emoji">
@@ -148,6 +148,10 @@ class FullCard extends AbstractComponent {
     </div>
   </form>
 </section>`;
+  }
+
+  setClickCloseHandler(handler) {
+    this.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
   }
 }
 
