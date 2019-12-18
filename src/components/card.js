@@ -1,8 +1,9 @@
 import {capitalizeFirstLetter} from "../utils";
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
-class Card {
+class Card extends AbstractComponent {
   constructor({title, poster, rating, releaseDate, runtime, genres, description, comments}) {
+    super();
     this._title = title;
     this._poster = poster;
     this._rating = rating;
@@ -11,15 +12,6 @@ class Card {
     this._genres = genres;
     this._description = description.length > 140 ? `${description.slice(0, 140)}...` : description;
     this._comments = comments;
-    this._element = null;
-  }
-
-  get element() {
-    if (this._element === null) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
   }
 
   get template() {
@@ -42,8 +34,22 @@ class Card {
         </article>`;
   }
 
-  removeElement() {
-    this._element = null;
+  setClickHandler(handler) {
+    this._setClickPosterHandler(handler);
+    this._setClickTitleHandler(handler);
+    this._setClickCommentsHandler(handler);
+  }
+
+  _setClickPosterHandler(handler) {
+    this.element.querySelector(`.film-card__poster`).addEventListener(`click`, handler);
+  }
+
+  _setClickTitleHandler(handler) {
+    this.element.querySelector(`.film-card__title`).addEventListener(`click`, handler);
+  }
+
+  _setClickCommentsHandler(handler) {
+    this.element.querySelector(`.film-card__comments`).addEventListener(`click`, handler);
   }
 }
 

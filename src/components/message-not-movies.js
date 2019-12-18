@@ -1,24 +1,12 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
-class MessageNotMovies {
+class MessageNotMovies extends AbstractComponent {
   constructor() {
-    this._element = null;
-  }
-
-  get element() {
-    if (this._element === null) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
+    super();
   }
 
   get template() {
     return `<h2 class="films-list__title">There are no movies in our database</h2>`;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

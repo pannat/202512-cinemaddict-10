@@ -1,17 +1,9 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
-class UserRating {
+class UserRating extends AbstractComponent {
   constructor(count) {
+    super();
     this._userRank = this.calculateUserRank(count);
-    this._element = null;
-  }
-
-  get element() {
-    if (this._element === null) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
   }
 
   get template() {
@@ -19,10 +11,6 @@ class UserRating {
     <p class="profile__rating">${this._userRank}</p>
     <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
   </section>`;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   calculateUserRank(count) {

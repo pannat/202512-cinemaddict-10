@@ -1,24 +1,13 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
-class MovieMainContainer {
+
+class MovieMainContainer extends AbstractComponent {
   constructor() {
-    this._element = null;
-  }
-
-  get element() {
-    if (this._element === null) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
+    super();
   }
 
   get template() {
     return `<section class="films"></section>`;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

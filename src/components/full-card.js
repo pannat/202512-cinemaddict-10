@@ -1,7 +1,8 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
-class FullCard {
+class FullCard extends AbstractComponent {
   constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit}) {
+    super();
     this._title = title;
     this._poster = poster;
     this._director = director;
@@ -15,15 +16,6 @@ class FullCard {
     this._description = description;
     this._comments = comments;
     this._ageLimit = ageLimit;
-    this._element = null;
-  }
-
-  get element() {
-    if (this._element === null) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
   }
 
   get template() {
@@ -107,7 +99,7 @@ class FullCard {
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._comments.length}</span></h3>
 
         <ul class="film-details__comments-list">
-        
+
         ${this._comments.map((comment) => `<li class="film-details__comment">
             <span class="film-details__comment-emoji">
               <img src="./images/emoji/${comment.emoji}.png" width="55" height="55" alt="emoji">
@@ -158,8 +150,8 @@ class FullCard {
 </section>`;
   }
 
-  removeElement() {
-    this._element = null;
+  setClickCloseHandler(handler) {
+    this.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
   }
 }
 
