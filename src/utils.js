@@ -1,5 +1,11 @@
 const capitalizeFirstLetter = (word) => word.charAt(0).toUpperCase() + word.slice(1);
 
+const SortType = {
+  DEFAULT: `default`,
+  DATE: `date`,
+  RATING: `rating`,
+};
+
 const Key = {
   ESCAPE_IE: `Escape`,
   ESCAPE: `Esc`,
@@ -28,5 +34,5 @@ const render = (container, element, place) => {
   }
 };
 
-export {capitalizeFirstLetter, RenderPosition, Key, createElement, render};
+export {capitalizeFirstLetter, RenderPosition, Key, createElement, render, SortType};
 
