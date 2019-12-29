@@ -1,5 +1,5 @@
 import MenuComponent from "./components/menu";
-import PageController from "./controllers/pageController";
+import Page from "./controllers/page";
 import UserRatingComponent from "./components/user-rating";
 import {getMovie, getRandomIntegerNumber} from "./mock/movie";
 import {RenderPosition, render} from "./utils";
@@ -31,5 +31,5 @@ render(headerElement, userRatingComponent.element, RenderPosition.BEFOREEND);
 const menuComponent = new MenuComponent(filters);
 render(mainElement, menuComponent.element, RenderPosition.AFTERBEGIN);
 
-const pageController = new PageController(mainElement, mocksData);
+const pageController = new Page(mainElement, mocksData);
 pageController.render();

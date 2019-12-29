@@ -34,22 +34,28 @@ class Card extends AbstractComponent {
         </article>`;
   }
 
-  setClickHandler(handler) {
-    this._setClickPosterHandler(handler);
-    this._setClickTitleHandler(handler);
-    this._setClickCommentsHandler(handler);
-  }
-
-  _setClickPosterHandler(handler) {
+  setPosterClickHandler(handler) {
     this.element.querySelector(`.film-card__poster`).addEventListener(`click`, handler);
   }
 
-  _setClickTitleHandler(handler) {
+  setTitleClickHandler(handler) {
     this.element.querySelector(`.film-card__title`).addEventListener(`click`, handler);
   }
 
-  _setClickCommentsHandler(handler) {
+  setCommentsClickHandler(handler) {
     this.element.querySelector(`.film-card__comments`).addEventListener(`click`, handler);
+  }
+
+  setAddToWatchListClickHandler(handler) {
+    this.element.querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, handler);
+  }
+
+  setMarkAsWatchedClickHandler(handler) {
+    this.element.querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, handler);
+  }
+
+  setFavoriteClickHandler(handler) {
+    this.element.querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, handler);
   }
 }
 

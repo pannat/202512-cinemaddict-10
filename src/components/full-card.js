@@ -150,8 +150,20 @@ class FullCard extends AbstractComponent {
 </section>`;
   }
 
-  setClickCloseHandler(handler) {
+  setCloseClickHandler(handler) {
     this.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
+  }
+
+  setAddToWatchListClickHandler(handler) {
+    this.element.querySelector(`#watchlist`).addEventListener(`click`, handler);
+  }
+
+  setMarkAsWatchedClickHandler(handler) {
+    this.element.querySelector(`#watched`).addEventListener(`click`, handler);
+  }
+
+  setFavoriteClickHandler(handler) {
+    this.element.querySelector(`#favorite`).addEventListener(`click`, handler);
   }
 }
 
