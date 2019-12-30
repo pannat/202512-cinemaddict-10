@@ -1,6 +1,5 @@
 import AbstractComponent from "./abstract-component";
 
-
 class MovieMainContainer extends AbstractComponent {
   constructor() {
     super();

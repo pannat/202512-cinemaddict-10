@@ -1,4 +1,3 @@
-
 import AbstractComponent from "./abstract-component";
 
 class MovieSection extends AbstractComponent {

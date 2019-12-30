@@ -1,4 +1,5 @@
-import {render, RenderPosition, SortType} from "../utils";
+import {SortType} from "../utils";
+import {render, RenderPosition} from "../utils/render";
 import SortComponent from "../components/sort";
 import MovieSectionComponent from "../components/movie-section";
 import MovieMainContainerComponent from "../components/movie-main-container";

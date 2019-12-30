@@ -1,4 +1,4 @@
-import {capitalizeFirstLetter} from "../utils";
+import {capitalizeFirstLetter} from "../utils/index";
 import AbstractComponent from "./abstract-component";
 
 class Menu extends AbstractComponent {

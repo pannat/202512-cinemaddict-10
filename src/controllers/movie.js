@@ -1,19 +1,26 @@
 import CardComponent from "../components/card";
 import FullCardComponent from "../components/full-card";
-import {Key, render, RenderPosition, SortType, ControlType} from "../utils";
+import {Key, ControlType} from "../utils";
+import {render, replace, RenderPosition} from "../utils/render";
 
 class MovieController {
   constructor(container, dataChangeHandler) {
     this._container = container;
     this._dataChangeHandler = dataChangeHandler;
+    this._cardComponent = null;
+    this._fullCardComponent = null;
   }
 
   render(data) {
-    const cardComponent = new CardComponent(data);
-    const fullCardComponent = new FullCardComponent(data);
+    const oldCardComponent = this._cardComponent;
+    const oldFullCardComponent = this._fullCardComponent;
+
+
+    this._cardComponent = new CardComponent(data);
+    this._fullCardComponent = new FullCardComponent(data);
 
     const closeFullCard = () => {
-      fullCardComponent.element.remove();
+      this._fullCardComponent.element.remove();
     };
 
     const keydownPressHandler = (evt) => {
@@ -24,35 +31,40 @@ class MovieController {
     };
 
     const openFullCard = () => {
-      fullCardComponent.setCloseClickHandler(closeFullCard);
+      this._fullCardComponent.setCloseClickHandler(closeFullCard);
       window.addEventListener(`keydown`, keydownPressHandler);
 
-      render(document.body, fullCardComponent.element, RenderPosition.BEFOREEND);
+      render(document.body, this._fullCardComponent.element, RenderPosition.BEFOREEND);
     };
 
     const cardControlsClickHandler = (controlType) => {
       let newProperty = {};
       switch (controlType) {
         case ControlType.WATCHLIST:
-          newProperty.isAddedWatchlist = true;
+          newProperty.isAddedWatchlist = !data.isAddedWatchlist;
           break;
         case ControlType.ALREADY_WATCHED:
-          newProperty.isAlreadyWatched = true;
+          newProperty.isAlreadyWatched = !data.isAlreadyWatched;
           break;
         case ControlType.FAVORITE:
-          newProperty.isFavorite = true;
+          newProperty.isFavorite = !data.isFavorite;
           break;
       }
       const newData = Object.assign(data, newProperty);
       this._dataChangeHandler(this, data, newData);
+    };
+
+    this._cardComponent.setPosterClickHandler(openFullCard);
+    this._cardComponent.setTitleClickHandler(openFullCard);
+    this._cardComponent.setCommentsClickHandler(openFullCard);
+    this._cardComponent.setControlsClickHandler(cardControlsClickHandler);
+
+    if (oldCardComponent && oldFullCardComponent) {
+      replace(this._cardComponent, oldCardComponent);
+      replace(this._fullCardComponent, oldFullCardComponent);
+    } else {
+      render(this._container, this._cardComponent.element, RenderPosition.BEFOREEND);
     }
-
-    cardComponent.setPosterClickHandler(openFullCard);
-    cardComponent.setTitleClickHandler(openFullCard);
-    cardComponent.setCommentsClickHandler(openFullCard);
-    cardComponent.setControlsClickHandler(cardControlsClickHandler);
-
-    render(this._container, cardComponent.element, RenderPosition.BEFOREEND);
   }
 
 

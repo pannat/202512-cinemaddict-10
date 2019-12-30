@@ -2,7 +2,7 @@ import MenuComponent from "./components/menu";
 import Page from "./controllers/page";
 import UserRatingComponent from "./components/user-rating";
 import {getMovie, getRandomIntegerNumber} from "./mock/movie";
-import {RenderPosition, render} from "./utils";
+import {RenderPosition, render} from "./utils/render";
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
