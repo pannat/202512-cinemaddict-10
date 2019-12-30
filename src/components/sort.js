@@ -4,7 +4,7 @@ import {SortType} from "../utils";
 class Sort extends AbstractComponent {
   constructor() {
     super();
-    this._currenSortType = SortType.DEFAULT;
+    this._currentSortType = SortType.DEFAULT;
   }
 
   get template() {
@@ -25,15 +25,15 @@ class Sort extends AbstractComponent {
 
       const sortType = evt.target.dataset.sortType;
 
-      if (this._currenSortType === sortType) {
+      if (this._currentSortType === sortType) {
         return;
       }
 
-      this.element.querySelector(`[data-sort-type="${this._currenSortType}"]`).classList.remove(`sort__button--active`);
+      this.element.querySelector(`[data-sort-type="${this._currentSortType}"]`).classList.remove(`sort__button--active`);
       this.element.querySelector(`[data-sort-type="${sortType}"]`).classList.add(`sort__button--active`);
-      this._currenSortType = sortType;
+      this._currentSortType = sortType;
 
-      handler(this._currenSortType);
+      handler(this._currentSortType);
     });
   }
 }

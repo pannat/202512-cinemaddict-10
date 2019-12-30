@@ -1,7 +1,7 @@
-import AbstractComponent from "./abstract-component";
+import AbstractSmartComponent from "./abstract-smart-component";
 
-class FullCard extends AbstractComponent {
-  constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit}) {
+class FullCard extends AbstractSmartComponent {
+  constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit, isFavorite, isAddedWatchlist, isAlreadyWatched}) {
     super();
     this._title = title;
     this._poster = poster;
@@ -16,6 +16,9 @@ class FullCard extends AbstractComponent {
     this._description = description;
     this._comments = comments;
     this._ageLimit = ageLimit;
+    this._isFavorite = isFavorite;
+    this._isAddedWatchlist = isAddedWatchlist;
+    this._isAlreadyWatched = isAlreadyWatched;
   }
 
   get template() {
@@ -83,13 +86,13 @@ class FullCard extends AbstractComponent {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${this._isAddedWatchlist ? `checked` : `` }>
         <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${this._isAlreadyWatched ? `checked` : `` }>
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${this._isFavorite ? `checked` : `` }>
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
     </div>
