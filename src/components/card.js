@@ -15,6 +15,9 @@ class Card extends AbstractSmartComponent {
     this._isFavorite = isFavorite;
     this._isAddedWatchlist = isAddedWatchlist;
     this._isAlreadyWatched = isAlreadyWatched;
+
+    this._descriptionClickHandler = null;
+    this._controlsClickHandler = null;
   }
 
   get template() {
@@ -30,26 +33,30 @@ class Card extends AbstractSmartComponent {
           <p class="film-card__description">${this._description}</p>
           <a class="film-card__comments">${this._comments.length} comments</a>
           <form class="film-card__controls">
-            <button data-control-type="${ControlType.WATCHLIST}" class="film-card__controls-item button film-card__controls-item--${ControlType.WATCHLIST} ${this._isAddedWatchlist ? `film-card__controls-item--active` : `` }">${capitalizeFirstLetter(ControlType.WATCHLIST)}</button>
-            <button data-control-type="${ControlType.ALREADY_WATCHED}" class="film-card__controls-item button film-card__controls-item--${ControlType.ALREADY_WATCHED} ${this._isAlreadyWatched ? `film-card__controls-item--active` : `` }">${capitalizeFirstLetter(ControlType.ALREADY_WATCHED)}</button>
-            <button data-control-type="${ControlType.FAVORITE}" class="film-card__controls-item button film-card__controls-item--${ControlType.FAVORITE} ${this._isFavorite ? `film-card__controls-item--active` : `` }">${capitalizeFirstLetter(ControlType.FAVORITE)}</button>
+            <button data-control-type="${ControlType.WATCHLIST}" class="film-card__controls-item button film-card__controls-item--add-to-${ControlType.WATCHLIST} ${this._isAddedWatchlist ? `film-card__controls-item--active` : `` }">Add to watchlist</button>
+            <button data-control-type="${ControlType.ALREADY_WATCHED}" class="film-card__controls-item button film-card__controls-item--mark-as-${ControlType.ALREADY_WATCHED} ${this._isAlreadyWatched ? `film-card__controls-item--active` : `` }">Already watched</button>
+            <button data-control-type="${ControlType.FAVORITE}" class="film-card__controls-item button film-card__controls-item--${ControlType.FAVORITE} ${this._isFavorite ? `film-card__controls-item--active` : `` }">Add to favorites</button>
           </form>
         </article>`;
   }
 
-  setPosterClickHandler(handler) {
-    this.element.querySelector(`.film-card__poster`).addEventListener(`click`, handler);
+  set descriptionClickHandler(handler) {
+    this._descriptionClickHandler = handler;
   }
 
-  setTitleClickHandler(handler) {
-    this.element.querySelector(`.film-card__title`).addEventListener(`click`, handler);
+  set controlsClickHandler(handler) {
+    this._controlsClickHandler = handler;
   }
 
-  setCommentsClickHandler(handler) {
-    this.element.querySelector(`.film-card__comments`).addEventListener(`click`, handler);
+  recoveryListeners() {
+    this._subscribeOnEvents();
   }
 
-  setControlsClickHandler(handler) {
+  _subscribeOnEvents() {
+    this.element.querySelector(`.film-card__poster`).addEventListener(`click`, this._descriptionClickHandler);
+    this.element.querySelector(`.film-card__title`).addEventListener(`click`, this._descriptionClickHandler);
+    this.element.querySelector(`.film-card__comments`).addEventListener(`click`, this._descriptionClickHandler);
+
     this.element.querySelector(`.film-card__controls`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
@@ -61,11 +68,9 @@ class Card extends AbstractSmartComponent {
         return;
       }
 
-      handler(evt.target.dataset.controlType);
+      this._controlsClickHandler(evt.target.dataset.controlType);
     });
   }
-
-
 }
 
 export default Card;

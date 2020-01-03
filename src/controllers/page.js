@@ -118,7 +118,6 @@ class PageController {
 
   _dataChangeHandler(movieController, oldData, newData) {
     const index = this._data.findIndex((it) => it === oldData);
-
     if (index === -1) {
       return;
     }

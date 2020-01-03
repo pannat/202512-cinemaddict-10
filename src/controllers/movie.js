@@ -15,49 +15,51 @@ class MovieController {
     const oldCardComponent = this._cardComponent;
     const oldFullCardComponent = this._fullCardComponent;
 
-
-    this._cardComponent = new CardComponent(data);
     this._fullCardComponent = new FullCardComponent(data);
-
-    const closeFullCard = () => {
-      this._fullCardComponent.element.remove();
-    };
-
+    this._cardComponent = new CardComponent(data);
     const keydownPressHandler = (evt) => {
       if (evt.key === Key.ESCAPE || evt.key === Key.ESCAPE_IE) {
         closeFullCard();
       }
-      window.removeEventListener(`keydown`, keydownPressHandler);
     };
 
-    const openFullCard = () => {
-      this._fullCardComponent.setCloseClickHandler(closeFullCard);
+    const closeFullCard = () => {
+      window.removeEventListener(`keydown`, keydownPressHandler);
+      this._fullCardComponent.reset();
+      this._fullCardComponent.element.remove();
+    };
+
+    const controlsClickHandler = (controlType) => {
+      let control = {};
+      switch (controlType) {
+        case ControlType.WATCHLIST:
+          control.isAddedWatchlist = !data.isAddedWatchlist;
+          break;
+        case ControlType.ALREADY_WATCHED:
+          control.isAlreadyWatched = !data.isAlreadyWatched;
+          break;
+        case ControlType.FAVORITE:
+          control.isFavorite = !data.isFavorite;
+          break;
+      }
+
+      window.removeEventListener(`keydown`, keydownPressHandler);
+      const newData = Object.assign(data, control);
+      this._dataChangeHandler(this, data, newData);
+    };
+
+    this._cardComponent.descriptionClickHandler = () => {
       window.addEventListener(`keydown`, keydownPressHandler);
 
       render(document.body, this._fullCardComponent.element, RenderPosition.BEFOREEND);
     };
 
-    const cardControlsClickHandler = (controlType) => {
-      let newProperty = {};
-      switch (controlType) {
-        case ControlType.WATCHLIST:
-          newProperty.isAddedWatchlist = !data.isAddedWatchlist;
-          break;
-        case ControlType.ALREADY_WATCHED:
-          newProperty.isAlreadyWatched = !data.isAlreadyWatched;
-          break;
-        case ControlType.FAVORITE:
-          newProperty.isFavorite = !data.isFavorite;
-          break;
-      }
-      const newData = Object.assign(data, newProperty);
-      this._dataChangeHandler(this, data, newData);
-    };
+    this._cardComponent.controlsClickHandler = controlsClickHandler;
+    this._fullCardComponent.controlsClickHandler = controlsClickHandler;
+    this._fullCardComponent.closeClickHandler = closeFullCard;
 
-    this._cardComponent.setPosterClickHandler(openFullCard);
-    this._cardComponent.setTitleClickHandler(openFullCard);
-    this._cardComponent.setCommentsClickHandler(openFullCard);
-    this._cardComponent.setControlsClickHandler(cardControlsClickHandler);
+    this._fullCardComponent.recoveryListeners();
+    this._cardComponent.recoveryListeners();
 
     if (oldCardComponent && oldFullCardComponent) {
       replace(this._cardComponent, oldCardComponent);
@@ -66,8 +68,6 @@ class MovieController {
       render(this._container, this._cardComponent.element, RenderPosition.BEFOREEND);
     }
   }
-
-
 }
 
 export default MovieController;

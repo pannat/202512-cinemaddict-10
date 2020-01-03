@@ -2,8 +2,8 @@ const capitalizeFirstLetter = (word) => word.charAt(0).toUpperCase() + word.slic
 
 const ControlType = {
   FAVORITE: `favorite`,
-  WATCHLIST: `add-to-watchlist`,
-  ALREADY_WATCHED: `mark-as-watched`
+  WATCHLIST: `watchlist`,
+  ALREADY_WATCHED: `watched`
 };
 
 const SortType = {
