@@ -1,5 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart-component";
-import {ControlType} from "../utils";
+import {ControlType, capitalizeFirstLetter} from "../utils";
 
 class FullCard extends AbstractSmartComponent {
   constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit, isFavorite, isAddedWatchlist, isAlreadyWatched}) {
@@ -77,9 +77,9 @@ class FullCard extends AbstractSmartComponent {
               <td class="film-details__cell">${this._country}</td>
             </tr>
             <tr class="film-details__row">
-              <td class="film-details__term">Genres</td>
+              <td class="film-details__term">${this._genres.length > 1 ? `Genres` : `Genre`}</td>
               <td class="film-details__cell">
-                ${this._genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}
+                <span class="film-details__genre">${this._genres.map((genre, index) => `${index === 0 ? capitalizeFirstLetter(genre) : `${genre}` }`).join(`, `)}</span>
             </tr>
           </table>
 
@@ -100,7 +100,7 @@ class FullCard extends AbstractSmartComponent {
         <label for="${ControlType.FAVORITE}" class="film-details__control-label film-details__control-label--${ControlType.FAVORITE}">Add to ${ControlType.FAVORITE}s</label>
       </section>
     </div>
-
+    <div class="form-details__middle-container"></div>
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._comments.length}</span></h3>
@@ -183,7 +183,7 @@ class FullCard extends AbstractSmartComponent {
       isFavorite: this._isFavorite,
       isAddedWatchlist: this._isAddedWatchlist,
       isAlreadyWatched: this._isAlreadyWatched
-    }
+    };
 
     this._isFavorite = controls.isFavorite;
     this._isAddedWatchlist = controls.isAddedWatchlist;

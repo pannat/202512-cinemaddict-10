@@ -21,4 +21,4 @@ class AbstractSmartComponent extends AbstractComponent {
   }
 }
 
-export default AbstractSmartComponent
+export default AbstractSmartComponent;
