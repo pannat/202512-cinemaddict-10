@@ -1,7 +1,7 @@
 import AbstractSmartComponent from "./abstract-smart-component";
 import {capitalizeFirstLetter} from "../utils";
 
-class FullCard extends AbstractSmartComponent {
+class FullCardComponent extends AbstractSmartComponent {
   constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit, isFavorite, isAddedWatchlist, isAlreadyWatched}) {
     super();
     this._title = title;
@@ -17,9 +17,6 @@ class FullCard extends AbstractSmartComponent {
     this._description = description;
     this._comments = comments;
     this._ageLimit = ageLimit;
-    this._isFavorite = isFavorite;
-    this._isAddedWatchlist = isAddedWatchlist;
-    this._isAlreadyWatched = isAlreadyWatched;
 
     this._closeClickHandler = null;
   }
@@ -149,36 +146,17 @@ class FullCard extends AbstractSmartComponent {
     this._closeClickHandler = handler;
   }
 
-  set controlsClickHandler(handler) {
-    this._controlsClickHandler = handler;
+  get middleContainerElement() {
+    return this.element.querySelector(`.form-details__middle-container`);
+  }
+
+  get ratingElement() {
+    return this.element.querySelector(`.film-details__rating`);
   }
 
   recoveryListeners() {
     this.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._closeClickHandler);
-
-    // this.element.querySelector(`.film-details__controls`).addEventListener(`click`, (evt) => {
-    //
-    //   if (evt.target.tagName !== `INPUT`) {
-    //     return;
-    //   }
-    //
-    //   this._controlsClickHandler(evt.target.name);
-    // });
   }
-
-  // reset() {
-  //   const controls = {
-  //     isFavorite: this._isFavorite,
-  //     isAddedWatchlist: this._isAddedWatchlist,
-  //     isAlreadyWatched: this._isAlreadyWatched
-  //   };
-  //
-  //   this._isFavorite = controls.isFavorite;
-  //   this._isAddedWatchlist = controls.isAddedWatchlist;
-  //   this._isAlreadyWatched = controls.isAlreadyWatched;
-  //
-  //   this.rerender();
-  // }
 }
 
-export default FullCard;
+export default FullCardComponent;

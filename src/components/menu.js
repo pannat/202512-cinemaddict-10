@@ -1,7 +1,7 @@
 import {capitalizeFirstLetter} from "../utils/index";
 import AbstractComponent from "./abstract-component";
 
-class Menu extends AbstractComponent {
+class MenuComponent extends AbstractComponent {
   constructor(filters) {
     super();
     this._filters = filters;
@@ -17,4 +17,4 @@ class Menu extends AbstractComponent {
   }
 }
 
-export default Menu;
+export default MenuComponent;

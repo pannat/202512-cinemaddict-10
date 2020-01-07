@@ -1,7 +1,7 @@
 import AbstractComponent from "./abstract-component";
 import {SortType} from "../utils";
 
-class Sort extends AbstractComponent {
+class SortComponent extends AbstractComponent {
   constructor() {
     super();
     this._currentSortType = SortType.DEFAULT;
@@ -38,5 +38,5 @@ class Sort extends AbstractComponent {
   }
 }
 
-export default Sort;
+export default SortComponent;
 

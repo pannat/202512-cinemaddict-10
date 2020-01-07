@@ -1,7 +1,7 @@
 import ControlsComponent from "./controls";
 import {ControlType} from "../utils";
 
-class FullCardControls extends ControlsComponent {
+class FullCardControlsComponent extends ControlsComponent {
   constructor(isAddedWatchlist, isAlreadyWatched, isFavorite) {
     super(isAddedWatchlist, isAlreadyWatched, isFavorite);
   }
@@ -46,4 +46,4 @@ class FullCardControls extends ControlsComponent {
   }
 }
 
-export default FullCardControls;
+export default FullCardControlsComponent;

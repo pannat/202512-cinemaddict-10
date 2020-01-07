@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
-class ButtonShowMore extends AbstractComponent {
+class ButtonShowMoreComponent extends AbstractComponent {
   get template() {
     return `<button class="films-list__show-more">Show more</button>`;
   }
@@ -10,4 +10,4 @@ class ButtonShowMore extends AbstractComponent {
   }
 }
 
-export default ButtonShowMore;
+export default ButtonShowMoreComponent;

@@ -2,11 +2,12 @@ import AbstractSmartComponent from "./abstract-smart-component";
 
 const ratingPoints = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-class CardDetails extends AbstractSmartComponent {
+class CardDetailsComponent extends AbstractSmartComponent {
   constructor({title, poster}) {
     super();
     this._title = title;
     this._poster = poster;
+    this.recoveryListeners();
   }
 
   get template() {
@@ -34,6 +35,12 @@ class CardDetails extends AbstractSmartComponent {
       </div>
     </section>`;
   }
+
+  recoveryListeners() {
+    this.element.querySelector(`.film-details__user-rating-score`).addEventListener(`change`, (evt) => {
+      console.log(evt.target.value)
+    })
+  }
 }
 
-export default CardDetails;
+export default CardDetailsComponent;

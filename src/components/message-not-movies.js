@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
-class MessageNotMovies extends AbstractComponent {
+class MessageNotMoviesComponent extends AbstractComponent {
   constructor() {
     super();
   }
@@ -10,4 +10,4 @@ class MessageNotMovies extends AbstractComponent {
   }
 }
 
-export default MessageNotMovies;
+export default MessageNotMoviesComponent;

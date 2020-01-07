@@ -1,7 +1,7 @@
 import {capitalizeFirstLetter} from "../utils";
 import AbstractSmartComponent from "./abstract-smart-component";
 
-class Card extends AbstractSmartComponent {
+class CardComponent extends AbstractSmartComponent {
   constructor({title, poster, rating, releaseDate, runtime, genres, description, comments}) {
     super();
     this._title = title;
@@ -42,4 +42,4 @@ class Card extends AbstractSmartComponent {
   }
 }
 
-export default Card;
+export default CardComponent;

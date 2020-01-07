@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
-class MovieSection extends AbstractComponent {
+class MovieSectionComponent extends AbstractComponent {
   constructor(title, modifier) {
     super();
     this._title = title;
@@ -14,5 +14,5 @@ class MovieSection extends AbstractComponent {
   }
 }
 
-export default MovieSection;
+export default MovieSectionComponent;
 

@@ -62,7 +62,7 @@ class MovieController {
   }
 
   rerender(data) {
-    // this._data = data;
+    this._data = data;
     this._cardControlsComponent.rerender(data);
     this._fullCardControlsComponent.rerender(data);
   }
@@ -90,12 +90,16 @@ class MovieController {
     const newData = Object.assign(this._data, data);
     if (this._data.isAlreadyWatched) {
       this._cardDetailsComponent = new CardDetails(this._data);
-      render(this._fullCardComponent.element.querySelector(`.form-details__middle-container`), this._cardDetailsComponent.element, RenderPosition.BEFOREEND);
+      render(this._fullCardComponent.middleContainerElement, this._cardDetailsComponent.element, RenderPosition.BEFOREEND);
     } else if (this._cardDetailsComponent) {
       this._cardDetailsComponent.element.remove();
       this._cardDetailsComponent.removeElement();
     }
     this._dataChangeHandler(this._id, this._data, newData);
+  }
+
+  _ratingChangeHandler(value) {
+    this._userRatingComponent = new UserRatingComponent(value);
   }
 
   _descriptionClickHandler() {

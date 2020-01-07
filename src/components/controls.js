@@ -1,7 +1,7 @@
 import AbstractSmartComponent from "./abstract-smart-component";
 
-class Controls extends AbstractSmartComponent {
-  constructor(isAddedWatchlist, isAlreadyWatched, isFavorite) {
+class ControlsComponent extends AbstractSmartComponent {
+  constructor({isAddedWatchlist, isAlreadyWatched, isFavorite}) {
     super();
     this._isAddedWatchlist = isAddedWatchlist;
     this._isAlreadyWatched = isAlreadyWatched;
@@ -28,4 +28,4 @@ class Controls extends AbstractSmartComponent {
   }
 }
 
-export default Controls;
+export default ControlsComponent;

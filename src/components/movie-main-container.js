@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
-class MovieMainContainer extends AbstractComponent {
+class MovieMainContainerComponent extends AbstractComponent {
   constructor() {
     super();
   }
@@ -10,4 +10,4 @@ class MovieMainContainer extends AbstractComponent {
   }
 }
 
-export default MovieMainContainer;
+export default MovieMainContainerComponent;

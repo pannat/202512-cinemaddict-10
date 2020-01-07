@@ -37,8 +37,7 @@ class PageController {
     this._containerSectionAllMovies = this._sectionAllMovies.element.querySelector(`.films-list__container`);
 
     this._showedMovieControllers = [];
-    this._mostCommentedMovieController = null;
-    this._topRatedMovieController = null;
+    this._extraMovies = [];
     this._dataChangeHandler = this._dataChangeHandler.bind(this);
     this._viewChangeHandler = this._viewChangeHandler.bind(this);
   }
@@ -73,6 +72,8 @@ class PageController {
         this._renderCard(containerMostCommented, this._data[index]);
         render(this._movieMainContainerComponent.element, sectionMostCommented.element, RenderPosition.BEFOREEND);
       }
+
+      this._extraMovies = this._showedMovieControllers.slice(this._showingMoviesCount);
     } else {
       this._movieMainContainerComponent.element.innerHTML = ``;
       render(this._container, this._messageNotMovies.element, RenderPosition.BEFOREEND);
@@ -113,7 +114,6 @@ class PageController {
 
   _sortClickHandler(sortType) {
     this._containerSectionAllMovies.innerHTML = ``;
-    this._showingMoviesCount = ShowingMovies.COUNT_ON_START;
     let sortedData = [];
     switch (sortType) {
       case SortType.DEFAULT:
@@ -126,7 +126,8 @@ class PageController {
         sortedData = this._data.slice(0).sort((a, b) => b.rating - a.rating);
         break;
     }
-    this._showedMovieControllers = [].concat(this._mostCommentedMovieController, this._topRatedMovieController);
+    this._showedMovieControllers = this._extraMovies.length ? [].concat(this._extraMovies) : [];
+    this._showingMoviesCount = ShowingMovies.COUNT_ON_START;
     this._renderCardsForSectionAllMovies(sortedData);
   }
 

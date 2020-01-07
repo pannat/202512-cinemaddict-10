@@ -1,6 +1,6 @@
 import MenuComponent from "./components/menu";
 import Page from "./controllers/page";
-import UserRatingComponent from "./components/user-rating";
+import UserProfile from "./components/user-profile";
 import {getMovie, getRandomIntegerNumber} from "./mock/movie";
 import {RenderPosition, render} from "./utils/render";
 
@@ -25,8 +25,8 @@ const filters = [{
 
 const totalAlreadyWatchedMovies = filters.find((it) => it.name === `history`).count;
 
-const userRatingComponent = new UserRatingComponent(totalAlreadyWatchedMovies);
-render(headerElement, userRatingComponent.element, RenderPosition.BEFOREEND);
+const userProfile = new UserProfile(totalAlreadyWatchedMovies);
+render(headerElement, userProfile.element, RenderPosition.BEFOREEND);
 
 const menuComponent = new MenuComponent(filters);
 render(mainElement, menuComponent.element, RenderPosition.AFTERBEGIN);

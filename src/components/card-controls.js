@@ -1,7 +1,7 @@
 import {ControlType} from "../utils";
 import Controls from "./controls";
 
-class CardControls extends Controls {
+class CardControlsComponent extends Controls {
   constructor(isAddedWatchlist, isAlreadyWatched, isFavorite) {
     super(isAddedWatchlist, isAlreadyWatched, isFavorite);
   }
@@ -41,4 +41,4 @@ class CardControls extends Controls {
   }
 }
 
-export default CardControls;
+export default CardControlsComponent;
