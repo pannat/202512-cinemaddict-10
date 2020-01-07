@@ -1,5 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart-component";
-import {ControlType, capitalizeFirstLetter} from "../utils";
+import {capitalizeFirstLetter} from "../utils";
 
 class FullCard extends AbstractSmartComponent {
   constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit, isFavorite, isAddedWatchlist, isAlreadyWatched}) {
@@ -21,7 +21,6 @@ class FullCard extends AbstractSmartComponent {
     this._isAddedWatchlist = isAddedWatchlist;
     this._isAlreadyWatched = isAlreadyWatched;
 
-    this._controlsClickHandler = null;
     this._closeClickHandler = null;
   }
 
@@ -88,17 +87,6 @@ class FullCard extends AbstractSmartComponent {
           </p>
         </div>
       </div>
-
-      <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="${ControlType.WATCHLIST}" name="${ControlType.WATCHLIST}" ${this._isAddedWatchlist ? `checked` : `` }>
-        <label for="${ControlType.WATCHLIST}" class="film-details__control-label film-details__control-label--${ControlType.WATCHLIST}">Add to ${ControlType.WATCHLIST}</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="${ControlType.ALREADY_WATCHED}" name="${ControlType.ALREADY_WATCHED}" ${this._isAlreadyWatched ? `checked` : `` }>
-        <label for="${ControlType.ALREADY_WATCHED}" class="film-details__control-label film-details__control-label--${ControlType.ALREADY_WATCHED}">Already ${ControlType.ALREADY_WATCHED}</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="${ControlType.FAVORITE}" name="${ControlType.FAVORITE}" ${this._isFavorite ? `checked` : `` }>
-        <label for="${ControlType.FAVORITE}" class="film-details__control-label film-details__control-label--${ControlType.FAVORITE}">Add to ${ControlType.FAVORITE}s</label>
-      </section>
     </div>
     <div class="form-details__middle-container"></div>
     <div class="form-details__bottom-container">
@@ -168,29 +156,29 @@ class FullCard extends AbstractSmartComponent {
   recoveryListeners() {
     this.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._closeClickHandler);
 
-    this.element.querySelector(`.film-details__controls`).addEventListener(`click`, (evt) => {
-
-      if (evt.target.tagName !== `INPUT`) {
-        return;
-      }
-
-      this._controlsClickHandler(evt.target.name);
-    });
+    // this.element.querySelector(`.film-details__controls`).addEventListener(`click`, (evt) => {
+    //
+    //   if (evt.target.tagName !== `INPUT`) {
+    //     return;
+    //   }
+    //
+    //   this._controlsClickHandler(evt.target.name);
+    // });
   }
 
-  reset() {
-    const controls = {
-      isFavorite: this._isFavorite,
-      isAddedWatchlist: this._isAddedWatchlist,
-      isAlreadyWatched: this._isAlreadyWatched
-    };
-
-    this._isFavorite = controls.isFavorite;
-    this._isAddedWatchlist = controls.isAddedWatchlist;
-    this._isAlreadyWatched = controls.isAlreadyWatched;
-
-    this.rerender();
-  }
+  // reset() {
+  //   const controls = {
+  //     isFavorite: this._isFavorite,
+  //     isAddedWatchlist: this._isAddedWatchlist,
+  //     isAlreadyWatched: this._isAlreadyWatched
+  //   };
+  //
+  //   this._isFavorite = controls.isFavorite;
+  //   this._isAddedWatchlist = controls.isAddedWatchlist;
+  //   this._isAlreadyWatched = controls.isAlreadyWatched;
+  //
+  //   this.rerender();
+  // }
 }
 
 export default FullCard;

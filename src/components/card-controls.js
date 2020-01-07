@@ -1,16 +1,9 @@
-import AbstractSmartComponent from "./abstract-smart-component";
 import {ControlType} from "../utils";
+import Controls from "./controls";
 
-class CardControls extends AbstractSmartComponent {
+class CardControls extends Controls {
   constructor(isAddedWatchlist, isAlreadyWatched, isFavorite) {
-    super();
-    this._isAddedWatchlist = isAddedWatchlist;
-    this._isAlreadyWatched = isAlreadyWatched;
-    this._isFavorite = isFavorite;
-
-    this._addWatchlistClickHandler = null;
-    this._alreadyWatchedClickHandler = null;
-    this._favoriteClickHandler = null;
+    super(isAddedWatchlist, isAlreadyWatched, isFavorite);
   }
 
   get template() {
@@ -21,22 +14,30 @@ class CardControls extends AbstractSmartComponent {
           </form>`;
   }
 
-  set addWatchlistClickHandler(handler) {
-    this._addWatchlistClickHandler = handler;
-  }
+  _controlsClickHandler(evt) {
+    evt.preventDefault();
 
-  set alreadyWatchedClickHandler(handler) {
-    this._alreadyWatchedClickHandler = handler;
-  }
+    if (evt.target.tagName !== `BUTTON`) {
+      return;
+    }
 
-  set favoriteClickHandler(handler) {
-    this._favoriteClickHandler = handler;
-  }
+    switch (evt.target.dataset.controlType) {
+      case ControlType.WATCHLIST:
+        this._isAddedWatchlist = !this._isAddedWatchlist;
+        break;
+      case ControlType.ALREADY_WATCHED:
+        this._isAlreadyWatched = !this._isAlreadyWatched;
+        break;
+      case ControlType.FAVORITE:
+        this._isFavorite = !this._isFavorite;
+        break;
+    }
 
-  recoveryListeners() {
-    this.element.querySelector(`[data-control-type=${ControlType.WATCHLIST}]`).addEventListener(`click`, this._addWatchlistClickHandler);
-    this.element.querySelector(`[data-control-type=${ControlType.ALREADY_WATCHED}]`).addEventListener(`click`, this._alreadyWatchedClickHandler);
-    this.element.querySelector(`[data-control-type=${ControlType.FAVORITE}]`).addEventListener(`click`, this._favoriteClickHandler);
+    this._dataChangeHandler({
+      isAddedWatchlist: this._isAddedWatchlist,
+      isAlreadyWatched: this._isAlreadyWatched,
+      isFavorite: this._isFavorite
+    });
   }
 }
 

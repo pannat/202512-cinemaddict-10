@@ -1,16 +1,9 @@
-import AbstractSmartComponent from "./abstract-smart-component";
+import ControlsComponent from "./controls";
 import {ControlType} from "../utils";
 
-class FullCardControls extends AbstractSmartComponent {
+class FullCardControls extends ControlsComponent {
   constructor(isAddedWatchlist, isAlreadyWatched, isFavorite) {
-    super();
-    this._isAddedWatchlist = isAddedWatchlist;
-    this._isAlreadyWatched = isAlreadyWatched;
-    this._isFavorite = isFavorite;
-
-    this._addWatchlistClickHandler = null;
-    this._alreadyWatchedClickHandler = null;
-    this._favoriteClickHandler = null;
+    super(isAddedWatchlist, isAlreadyWatched, isFavorite);
   }
 
 
@@ -27,22 +20,29 @@ class FullCardControls extends AbstractSmartComponent {
       </section>`;
   }
 
-  set addWatchlistClickHandler(handler) {
-    this._addWatchlistClickHandler = handler;
-  }
+  _controlsClickHandler(evt) {
 
-  set alreadyWatchedClickHandler(handler) {
-    this._alreadyWatchedClickHandler = handler;
-  }
+    if (evt.target.tagName !== `INPUT`) {
+      return;
+    }
 
-  set favoriteClickHandler(handler) {
-    this._favoriteClickHandler = handler;
-  }
+    switch (evt.target.name) {
+      case ControlType.WATCHLIST:
+        this._isAddedWatchlist = !this._isAddedWatchlist;
+        break;
+      case ControlType.ALREADY_WATCHED:
+        this._isAlreadyWatched = !this._isAlreadyWatched;
+        break;
+      case ControlType.FAVORITE:
+        this._isFavorite = !this._isFavorite;
+        break;
+    }
 
-  recoveryListeners() {
-    this.element.querySelector(`#${ControlType.WATCHLIST}]`).addEventListener(`click`, this._addWatchlistClickHandler);
-    this.element.querySelector(`#${ControlType.ALREADY_WATCHED}]`).addEventListener(`click`, this._alreadyWatchedClickHandler);
-    this.element.querySelector(`#${ControlType.FAVORITE}]`).addEventListener(`click`, this._favoriteClickHandler);
+    this._dataChangeHandler({
+      isAddedWatchlist: this._isAddedWatchlist,
+      isAlreadyWatched: this._isAlreadyWatched,
+      isFavorite: this._isFavorite
+    });
   }
 }
 

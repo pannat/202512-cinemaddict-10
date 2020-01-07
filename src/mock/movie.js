@@ -117,8 +117,11 @@ const getRandomIntegerNumber = (min, max) => {
   return min + Math.floor(max * Math.random());
 };
 
+let id = 0;
+
 const getMovie = () => (
   {
+    id: id++,
     title: getRandomArrayItem(titleItems),
     poster: getRandomArrayItem(posterNames),
     description: getRandomNewArray(descriptionItems).join(``),
