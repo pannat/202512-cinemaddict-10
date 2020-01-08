@@ -2,7 +2,7 @@ import AbstractSmartComponent from "./abstract-smart-component";
 import {capitalizeFirstLetter} from "../utils";
 
 class FullCardComponent extends AbstractSmartComponent {
-  constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit, isFavorite, isAddedWatchlist, isAlreadyWatched}) {
+  constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit}) {
     super();
     this._title = title;
     this._poster = poster;
