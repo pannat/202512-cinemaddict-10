@@ -117,8 +117,11 @@ const getRandomIntegerNumber = (min, max) => {
   return min + Math.floor(max * Math.random());
 };
 
+let id = 0;
+
 const getMovie = () => (
   {
+    id: id++,
     title: getRandomArrayItem(titleItems),
     poster: getRandomArrayItem(posterNames),
     description: getRandomNewArray(descriptionItems).join(``),
@@ -134,6 +137,7 @@ const getMovie = () => (
     isFavorite: Boolean(getRandomIntegerNumber(0, 2)),
     isAddedWatchlist: Boolean(getRandomIntegerNumber(0, 2)),
     isAlreadyWatched: Boolean(getRandomIntegerNumber(0, 2)),
+    personalRating: getRandomIntegerNumber(1, 10),
     comments: [...Array(getRandomIntegerNumber(0, 10))].map(() => ({
       author: getRandomArrayItem(writers),
       message: getRandomNewArray(descriptionItems).join(``),

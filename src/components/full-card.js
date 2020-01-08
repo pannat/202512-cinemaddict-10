@@ -1,6 +1,7 @@
-import AbstractComponent from "./abstract-component";
+import AbstractSmartComponent from "./abstract-smart-component";
+import {capitalizeFirstLetter} from "../utils";
 
-class FullCard extends AbstractComponent {
+class FullCardComponent extends AbstractSmartComponent {
   constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit}) {
     super();
     this._title = title;
@@ -16,6 +17,8 @@ class FullCard extends AbstractComponent {
     this._description = description;
     this._comments = comments;
     this._ageLimit = ageLimit;
+
+    this._closeClickHandler = null;
   }
 
   get template() {
@@ -70,9 +73,9 @@ class FullCard extends AbstractComponent {
               <td class="film-details__cell">${this._country}</td>
             </tr>
             <tr class="film-details__row">
-              <td class="film-details__term">Genres</td>
+              <td class="film-details__term">${this._genres.length > 1 ? `Genres` : `Genre`}</td>
               <td class="film-details__cell">
-                ${this._genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}
+                <span class="film-details__genre">${this._genres.map((genre, index) => `${index === 0 ? capitalizeFirstLetter(genre) : `${genre}` }`).join(`, `)}</span>
             </tr>
           </table>
 
@@ -81,19 +84,8 @@ class FullCard extends AbstractComponent {
           </p>
         </div>
       </div>
-
-      <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
-        <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
-        <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
-        <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
-      </section>
     </div>
-
+    <div class="form-details__middle-container"></div>
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._comments.length}</span></h3>
@@ -150,9 +142,21 @@ class FullCard extends AbstractComponent {
 </section>`;
   }
 
-  setClickCloseHandler(handler) {
-    this.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
+  set closeClickHandler(handler) {
+    this._closeClickHandler = handler;
+  }
+
+  get middleContainerElement() {
+    return this.element.querySelector(`.form-details__middle-container`);
+  }
+
+  get ratingElement() {
+    return this.element.querySelector(`.film-details__rating`);
+  }
+
+  recoveryListeners() {
+    this.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._closeClickHandler);
   }
 }
 
-export default FullCard;
+export default FullCardComponent;

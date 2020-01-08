@@ -1,8 +1,8 @@
 import MenuComponent from "./components/menu";
-import PageController from "./controllers/pageController";
-import UserRatingComponent from "./components/user-rating";
+import Page from "./controllers/page";
+import UserProfile from "./components/user-profile";
 import {getMovie, getRandomIntegerNumber} from "./mock/movie";
-import {RenderPosition, render} from "./utils";
+import {RenderPosition, render} from "./utils/render";
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
@@ -25,11 +25,11 @@ const filters = [{
 
 const totalAlreadyWatchedMovies = filters.find((it) => it.name === `history`).count;
 
-const userRatingComponent = new UserRatingComponent(totalAlreadyWatchedMovies);
-render(headerElement, userRatingComponent.element, RenderPosition.BEFOREEND);
+const userProfile = new UserProfile(totalAlreadyWatchedMovies);
+render(headerElement, userProfile.element, RenderPosition.BEFOREEND);
 
 const menuComponent = new MenuComponent(filters);
 render(mainElement, menuComponent.element, RenderPosition.AFTERBEGIN);
 
-const pageController = new PageController(mainElement, mocksData);
+const pageController = new Page(mainElement, mocksData);
 pageController.render();
