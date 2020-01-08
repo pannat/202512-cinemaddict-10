@@ -5,6 +5,7 @@ import {Key} from "../utils";
 import {render, replace, RenderPosition} from "../utils/render";
 import CardControls from "../components/card-controls";
 import FullCardControls from "../components/full-card-controls";
+import UserRatingComponent from "../components/user-rating";
 
 const Mode = {
   DEFAULT: `default`,
@@ -28,6 +29,8 @@ class MovieController {
     this._keydownPressHandler = this._keydownPressHandler.bind(this);
     this._descriptionClickHandler = this._descriptionClickHandler.bind(this);
     this._controlsClickHandler = this._controlsClickHandler.bind(this);
+    this._ratingChangeHandler = this._ratingChangeHandler.bind(this);
+    this._resetRatingClickHandler = this._resetRatingClickHandler.bind(this);
   }
 
   get id() {
@@ -48,6 +51,13 @@ class MovieController {
     this._fullCardComponent.closeClickHandler = this._closeFullCard;
     this._fullCardControlsComponent = new FullCardControls(this._data);
     this._fullCardControlsComponent.dataChangeHandler = this._controlsClickHandler;
+    if (this._data.isAlreadyWatched) {
+      this._userRatingComponent = new UserRatingComponent(this._data.personalRating);
+      render(this._fullCardComponent.ratingElement, this._userRatingComponent.element, RenderPosition.BEFOREEND);
+
+      this._initializeCardDetails();
+      render(this._fullCardComponent.middleContainerElement, this._cardDetailsComponent.element, RenderPosition.BEFOREEND);
+    }
     render(this._fullCardComponent.element.querySelector(`.form-details__top-container`), this._fullCardControlsComponent.element, RenderPosition.BEFOREEND);
 
     this._fullCardComponent.recoveryListeners();
@@ -74,6 +84,13 @@ class MovieController {
     }
   }
 
+  _initializeCardDetails() {
+    this._cardDetailsComponent = new CardDetails(this._data);
+    this._cardDetailsComponent.ratingChangeHandler = this._ratingChangeHandler;
+    this._cardDetailsComponent.resetClickHandler = this._resetRatingClickHandler;
+    render(this._fullCardComponent.middleContainerElement, this._cardDetailsComponent.element, RenderPosition.BEFOREEND);
+  }
+
   _closeFullCard() {
     window.removeEventListener(`keydown`, this._keydownPressHandler);
     this._fullCardComponent.element.remove();
@@ -87,10 +104,15 @@ class MovieController {
   }
 
   _controlsClickHandler(data) {
-    const newData = Object.assign(this._data, data);
+    let newData = Object.assign(this._data, data);
     if (this._data.isAlreadyWatched) {
-      this._cardDetailsComponent = new CardDetails(this._data);
-      render(this._fullCardComponent.middleContainerElement, this._cardDetailsComponent.element, RenderPosition.BEFOREEND);
+      if (this._cardDetailsComponent) {
+        this._cardDetailsComponent.recoveryListeners();
+        render(this._fullCardComponent.middleContainerElement, this._cardDetailsComponent.element, RenderPosition.BEFOREEND);
+        newData = Object.assign(this._data, {personalRating: this._cardDetailsComponent.currentScore});
+      } else {
+        this._initializeCardDetails();
+      }
     } else if (this._cardDetailsComponent) {
       this._cardDetailsComponent.element.remove();
       this._cardDetailsComponent.removeElement();
@@ -99,7 +121,21 @@ class MovieController {
   }
 
   _ratingChangeHandler(value) {
-    this._userRatingComponent = new UserRatingComponent(value);
+    if (this._userRatingComponent) {
+      if (this._fullCardComponent.ratingElement.contains(this._userRatingComponent.element)) {
+        this._userRatingComponent.rerender(value);
+      } else {
+        render(this._fullCardComponent.ratingElement, this._userRatingComponent.element, RenderPosition.BEFOREEND);
+      }
+    } else {
+      this._userRatingComponent = new UserRatingComponent(value);
+      render(this._fullCardComponent.ratingElement, this._userRatingComponent.element, RenderPosition.BEFOREEND);
+    }
+  }
+
+  _resetRatingClickHandler() {
+    this._userRatingComponent.element.remove();
+    this._userRatingComponent.removeElement();
   }
 
   _descriptionClickHandler() {

@@ -1,7 +1,7 @@
 import AbstractSmartComponent from "./abstract-smart-component";
 
 class ControlsComponent extends AbstractSmartComponent {
-  constructor({isAddedWatchlist, isAlreadyWatched, isFavorite}) {
+  constructor(isAddedWatchlist, isAlreadyWatched, isFavorite) {
     super();
     this._isAddedWatchlist = isAddedWatchlist;
     this._isAlreadyWatched = isAlreadyWatched;

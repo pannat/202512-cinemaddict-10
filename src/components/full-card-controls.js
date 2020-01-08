@@ -2,7 +2,7 @@ import ControlsComponent from "./controls";
 import {ControlType} from "../utils";
 
 class FullCardControlsComponent extends ControlsComponent {
-  constructor(isAddedWatchlist, isAlreadyWatched, isFavorite) {
+  constructor({isAddedWatchlist, isAlreadyWatched, isFavorite}) {
     super(isAddedWatchlist, isAlreadyWatched, isFavorite);
   }
 

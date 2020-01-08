@@ -2,7 +2,7 @@ import {ControlType} from "../utils";
 import Controls from "./controls";
 
 class CardControlsComponent extends Controls {
-  constructor(isAddedWatchlist, isAlreadyWatched, isFavorite) {
+  constructor({isAddedWatchlist, isAlreadyWatched, isFavorite}) {
     super(isAddedWatchlist, isAlreadyWatched, isFavorite);
   }
 

@@ -3,10 +3,15 @@ import AbstractSmartComponent from "./abstract-smart-component";
 const ratingPoints = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 class CardDetailsComponent extends AbstractSmartComponent {
-  constructor({title, poster}) {
+  constructor({title, poster, personalRating}) {
     super();
     this._title = title;
     this._poster = poster;
+    this._currentScore = personalRating;
+    this._ratingChangeHandler = null;
+    this._resetClickHandler = null;
+
+    this._ratingResetClickHandler = this._ratingResetClickHandler.bind(this);
     this.recoveryListeners();
   }
 
@@ -27,7 +32,8 @@ class CardDetailsComponent extends AbstractSmartComponent {
 
               <div class="film-details__user-rating-score">
                   ${ratingPoints.map((it) => {
-    return `<input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${it}" id="rating-${it}-${this._title}">
+    return `<input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${it}" id="rating-${it}-${this._title}"
+${this._currentScore && this._currentScore === it ? `checked` : ``}>
       <label class="film-details__user-rating-label" for="rating-${it}-${this._title}">${it}</label>`;
   }).join(``)}
               </div>
@@ -36,10 +42,32 @@ class CardDetailsComponent extends AbstractSmartComponent {
     </section>`;
   }
 
+  set ratingChangeHandler(handler) {
+    this._ratingChangeHandler = handler;
+  }
+
+  set resetClickHandler(handler) {
+    this._resetClickHandler = handler;
+  }
+
+  get currentScore() {
+    return this._currentScore;
+  }
+
   recoveryListeners() {
     this.element.querySelector(`.film-details__user-rating-score`).addEventListener(`change`, (evt) => {
-      console.log(evt.target.value)
-    })
+      this._ratingChangeHandler(evt.target.value);
+      this._currentScore = evt.target.value;
+    });
+
+    this.element.querySelector(`.film-details__watched-reset`).addEventListener(`click`, this._ratingResetClickHandler);
+  }
+
+  _ratingResetClickHandler(evt) {
+    evt.preventDefault();
+
+    this.element.querySelector(`[id^=rating-${this._currentScore}]`).checked = false;
+    this._resetClickHandler();
   }
 }
 
