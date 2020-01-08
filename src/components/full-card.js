@@ -1,5 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component";
 import {capitalizeFirstLetter} from "../utils";
+import moment from "moment";
 
 class FullCardComponent extends AbstractSmartComponent {
   constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit}) {
