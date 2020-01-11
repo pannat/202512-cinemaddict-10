@@ -1,5 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component";
 import {capitalizeFirstLetter} from "../utils";
+import moment from "moment";
 
 class FullCardComponent extends AbstractSmartComponent {
   constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit}) {
@@ -9,7 +10,7 @@ class FullCardComponent extends AbstractSmartComponent {
     this._director = director;
     this._writers = writers;
     this._actors = actors;
-    this._releaseDate = releaseDate;
+    this._releaseDate = moment(releaseDate).format(`DD MMMM YYYY`);
     this._runtime = runtime;
     this._country = country;
     this._genres = genres;
@@ -62,7 +63,7 @@ class FullCardComponent extends AbstractSmartComponent {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${new Date(this._releaseDate).toDateString().slice(4)}</td>
+              <td class="film-details__cell">${this._releaseDate}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
@@ -100,7 +101,7 @@ class FullCardComponent extends AbstractSmartComponent {
               <p class="film-details__comment-text">${comment.message}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${comment.author}</span>
-                <span class="film-details__comment-day">${new Date(comment.date).toDateString()}</span>
+                <span class="film-details__comment-day">${moment(comment.date).format(`YYYY/MM/DD HH:MM`)}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
