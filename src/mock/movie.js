@@ -91,8 +91,7 @@ const genres = [
   `historical`
 ];
 
-const getRandomRuntime = () => {
-  let min = getRandomIntegerNumber(0, 181);
+const formatRuntime = (min) => {
   let hours = 0;
   if (min > 60) {
     hours = Math.floor(min / 60);
@@ -129,7 +128,7 @@ const getMovie = () => (
     writers: getRandomNewArray(writers),
     actors: getRandomNewArray(actors),
     releaseDate: getRandomDate(),
-    runtime: getRandomRuntime(),
+    runtime: formatRuntime(getRandomIntegerNumber(0, 181)),
     country: getRandomArrayItem(countries),
     rating: Number(`${getRandomIntegerNumber(0, 10)}.${getRandomIntegerNumber(0, 10)}`),
     genres: getRandomNewArray(genres),
