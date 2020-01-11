@@ -25,6 +25,7 @@ class MovieController {
 
     this._dataChangeHandler = dataChangeHandler;
     this._viewChangeHandler = viewChangeHandler;
+
     this._closeFullCard = this._closeFullCard.bind(this);
     this._keydownPressHandler = this._keydownPressHandler.bind(this);
     this._descriptionClickHandler = this._descriptionClickHandler.bind(this);
@@ -104,12 +105,12 @@ class MovieController {
   }
 
   _controlsClickHandler(data) {
-    let newData = Object.assign(this._data, data);
-    if (this._data.isAlreadyWatched) {
+    let newData = Object.assign({}, this._data, data);
+    if (newData.isAlreadyWatched) {
       if (this._cardDetailsComponent) {
         this._cardDetailsComponent.recoveryListeners();
         render(this._fullCardComponent.middleContainerElement, this._cardDetailsComponent.element, RenderPosition.BEFOREEND);
-        newData = Object.assign(this._data, {personalRating: this._cardDetailsComponent.currentScore});
+        newData = Object.assign(newData, {personalRating: this._cardDetailsComponent.currentScore});
       } else {
         this._initializeCardDetails();
       }
@@ -117,7 +118,7 @@ class MovieController {
       this._cardDetailsComponent.element.remove();
       this._cardDetailsComponent.removeElement();
     }
-    this._dataChangeHandler(this._id, this._data, newData);
+    this._dataChangeHandler(this._data.id, newData);
   }
 
   _ratingChangeHandler(value) {

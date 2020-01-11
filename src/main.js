@@ -1,4 +1,5 @@
 import MenuComponent from "./components/menu";
+import MoviesModel from "./models/movies"
 import Page from "./controllers/page";
 import UserProfile from "./components/user-profile";
 import {getMovie, getRandomIntegerNumber} from "./mock/movie";
@@ -9,6 +10,8 @@ const mainElement = document.querySelector(`.main`);
 const MOVIES_COUNT = getRandomIntegerNumber(0, 15);
 
 const mocksData = [...Array(MOVIES_COUNT)].map(getMovie);
+const moviesModel = new MoviesModel();
+moviesModel.setMovies(mocksData);
 
 const filters = [{
   name: `watchlist`,
@@ -31,5 +34,5 @@ render(headerElement, userProfile.element, RenderPosition.BEFOREEND);
 const menuComponent = new MenuComponent(filters);
 render(mainElement, menuComponent.element, RenderPosition.AFTERBEGIN);
 
-const pageController = new Page(mainElement, mocksData);
+const pageController = new Page(mainElement, moviesModel);
 pageController.render();
