@@ -1,4 +1,11 @@
-const capitalizeFirstLetter = (word) => word.charAt(0).toUpperCase() + word.slice(1);
+const RATING_POINTS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+const FilterType = {
+  ALL_MOVIES: `All movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`
+}
 
 const ControlType = {
   FAVORITE: `favorite`,
@@ -17,4 +24,6 @@ const Key = {
   ESCAPE: `Esc`,
 };
 
-export {capitalizeFirstLetter, Key, SortType, ControlType};
+export {RATING_POINTS, FilterType, ControlType, SortType, Key};
+
+

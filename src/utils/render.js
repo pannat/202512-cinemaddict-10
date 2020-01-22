@@ -22,7 +22,7 @@ const render = (container, element, place) => {
 };
 
 const remove = (component) => {
-  component.getElement().remove();
+  component.element.remove();
   component.removeElement();
 };
 

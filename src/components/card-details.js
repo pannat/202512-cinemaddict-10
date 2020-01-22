@@ -1,6 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart-component";
-
-const ratingPoints = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+import {RATING_POINTS} from "../const";
 
 class CardDetailsComponent extends AbstractSmartComponent {
   constructor({title, poster, personalRating}) {
@@ -31,7 +30,7 @@ class CardDetailsComponent extends AbstractSmartComponent {
               <p class="film-details__user-rating-feelings">How you feel it?</p>
 
               <div class="film-details__user-rating-score">
-                  ${ratingPoints.map((it) => {
+                  ${RATING_POINTS.map((it) => {
     return `<input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${it}" id="rating-${it}-${this._title}"
 ${this._currentScore && this._currentScore === it ? `checked` : ``}>
       <label class="film-details__user-rating-label" for="rating-${it}-${this._title}">${it}</label>`;

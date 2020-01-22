@@ -1,4 +1,4 @@
-import {ControlType} from "../utils";
+import {ControlType} from "../const";
 import Controls from "./controls";
 
 class CardControlsComponent extends Controls {

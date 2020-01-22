@@ -1,4 +1,4 @@
-import {capitalizeFirstLetter} from "../utils";
+import {capitalizeFirstLetter} from "../utils/common";
 import AbstractSmartComponent from "./abstract-smart-component";
 
 class CardComponent extends AbstractSmartComponent {

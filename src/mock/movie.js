@@ -1,3 +1,5 @@
+import {formatRuntime} from "../utils/common";
+
 const titleItems = [
   `Gisaengchung`,
   `Manbiki kazoku`,
@@ -90,15 +92,6 @@ const genres = [
   `fantasy`,
   `historical`
 ];
-
-const formatRuntime = (min) => {
-  let hours = 0;
-  if (min > 60) {
-    hours = Math.floor(min / 60);
-    min = min - (60 * hours);
-  }
-  return `${ hours ? `${hours}h` : ``}${ min > 0 ? ` ${min}m` : ``}`.trim();
-};
 
 const getRandomDate = () => Date.now() - getRandomIntegerNumber(0, 18250) * 24 * 60 * 60 * 1000;
 

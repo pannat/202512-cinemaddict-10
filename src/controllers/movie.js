@@ -1,7 +1,7 @@
 import CardComponent from "../components/card";
 import FullCardComponent from "../components/full-card";
 import CardDetails from "../components/card-details";
-import {Key} from "../utils";
+import {Key} from "../const";
 import {render, replace, RenderPosition} from "../utils/render";
 import CardControls from "../components/card-controls";
 import FullCardControls from "../components/full-card-controls";
