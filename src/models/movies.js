@@ -7,6 +7,7 @@ class MoviesModel {
 
     this._activeFilterType = FilterType.ALL_MOVIES;
     this._filterChangeHandlers = [];
+    this._dataChangeHandlers = [];
   }
 
   get moviesByFilter() {
@@ -30,6 +31,10 @@ class MoviesModel {
     this._filterChangeHandlers.push(handler);
   }
 
+  set dataChangeHandler(handler) {
+    this._dataChangeHandlers.push(handler);
+  }
+
   updateMovie(id, newMovie) {
     const index = this._movies.findIndex((it) => it.id === id);
     if (index === -1) {
@@ -37,6 +42,8 @@ class MoviesModel {
     }
 
     this._movies = [].concat(this._movies.slice(0, index), newMovie, this._movies.slice(index + 1));
+
+    this._dataChangeHandlers.forEach((handler) => handler());
 
     return true;
   }

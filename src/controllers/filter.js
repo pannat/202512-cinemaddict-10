@@ -11,6 +11,7 @@ class FilterController {
     this._activeFilterType = FilterType.ALL_MOVIES;
     this._filterComponent = null;
     this._filterChangeHandler = this._filterChangeHandler.bind(this);
+    this._moviesModel.dataChangeHandler = this._dataChangeHandler.bind(this);
   }
 
   render() {
@@ -38,6 +39,10 @@ class FilterController {
   _filterChangeHandler(filterType) {
     this._moviesModel.filter = filterType;
     this._activeFilterType = filterType;
+    this.render();
+  }
+
+  _dataChangeHandler() {
     this.render();
   }
 }
