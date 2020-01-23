@@ -110,6 +110,7 @@ const getRandomIntegerNumber = (min, max) => {
 };
 
 let id = 0;
+let commentId = 0
 
 const getMovie = () => (
   {
@@ -131,6 +132,7 @@ const getMovie = () => (
     isAlreadyWatched: Boolean(getRandomIntegerNumber(0, 2)),
     personalRating: getRandomIntegerNumber(1, 10),
     comments: [...Array(getRandomIntegerNumber(0, 10))].map(() => ({
+      id: commentId++,
       author: getRandomArrayItem(writers),
       message: getRandomNewArray(descriptionItems).join(``),
       date: getRandomDate(),
