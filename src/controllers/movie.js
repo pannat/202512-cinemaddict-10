@@ -42,6 +42,7 @@ class MovieController {
     this._resetRatingClickHandler = this._resetRatingClickHandler.bind(this);
     this._newEmojiClickHandler = this._newEmojiClickHandler.bind(this);
     this._deleteCommentClickHandler = this._deleteCommentClickHandler.bind(this);
+    this._addCommentClickHandler = this._addCommentClickHandler.bind(this);
   }
 
   get id() {
@@ -90,10 +91,22 @@ class MovieController {
     this._fullCardControlsComponent.rerender(data);
   }
 
+  addNewComment(comment) {
+    this._renderComment(comment);
+    this._addCommentAreaComponent.rerender();
+  }
+
   deleteComment(id) {
     const index = this._comments.findIndex((comment) => comment.id === id);
     remove(this._comments[index]);
     this._comments.splice(index, 1);
+
+    const oldCommentsTitleComponent = this._commentsTitleComponent;
+    this._commentsTitleComponent = new CommentsTitleComponent(this._comments.length);
+
+    if (oldCommentsTitleComponent) {
+      replace(this._commentsTitleComponent, oldCommentsTitleComponent);
+    }
   }
 
   setDefaultView() {
@@ -115,29 +128,29 @@ class MovieController {
     this._commentsTitleComponent = new CommentsTitleComponent(this._data.comments.length);
     render(this._commentsSection.element, this._commentsTitleComponent.element, RenderPosition.AFTERBEGIN);
 
-
-    this._renderComments(this._data);
+    this._data.comments.forEach((comment) => {
+      this._renderComment(comment);
+    });
     this._addCommentAreaComponent = new AddCommentAreaComponent();
-    this._addCommentAreaComponent.addNewCommentTextAreaKeyupHandler = () => {};
+    this._addCommentAreaComponent.addNewCommentTextAreaKeyupHandler = this._addCommentClickHandler;
     this._addCommentAreaComponent.newEmojiClickHandler = this._newEmojiClickHandler;
     this._addCommentAreaComponent.recoveryListeners();
     render(this._commentsSection.element, this._addCommentAreaComponent.element, RenderPosition.BEFOREEND);
     render(this._fullCardComponent.commentContainerElement, this._commentsSection.element, RenderPosition.BEFOREEND);
   }
 
-  _renderComments(data) {
-    data.comments.forEach((comment) => {
-      const commentComponent = new Comment(comment);
-      commentComponent.deleteClickHandler = this._deleteCommentClickHandler;
-      commentComponent.recoveryListeners();
-      this._comments.push(commentComponent);
-      render(this._commentsSection.commentsList, commentComponent.element, RenderPosition.BEFOREEND);
-    });
+  _renderComment(data) {
+    const commentComponent = new Comment(data);
+    commentComponent.deleteClickHandler = this._deleteCommentClickHandler;
+    commentComponent.recoveryListeners();
+    this._comments.push(commentComponent);
+    render(this._commentsSection.commentsList, commentComponent.element, RenderPosition.BEFOREEND);
   }
 
   _closeFullCard() {
     window.removeEventListener(`keydown`, this._keydownPressHandler);
     this._fullCardComponent.element.remove();
+    document.body.classList.add(`hide-overflow`);
     this._mode = Mode.DEFAULT;
   }
 
@@ -186,6 +199,7 @@ class MovieController {
     this._viewChangeHandler();
 
     render(document.body, this._fullCardComponent.element, RenderPosition.BEFOREEND);
+    document.body.classList.add(`hide-overflow`);
     window.addEventListener(`keydown`, this._keydownPressHandler);
     this._mode = Mode.OPEN_POPUP;
   }
@@ -203,6 +217,10 @@ class MovieController {
 
   _deleteCommentClickHandler(idComment) {
     this._commentsChangeHandler(this.id, idComment);
+  }
+
+  _addCommentClickHandler(idComment, newData) {
+    this._commentsChangeHandler(this.id, idComment, newData);
   }
 }
 

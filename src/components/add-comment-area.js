@@ -1,11 +1,12 @@
-import AbstractComponent from "./abstract-component";
 import {Key, Emoji} from "../const";
+import AbstractSmartComponent from "./abstract-smart-component";
 
-class addCommentAreaComponent extends AbstractComponent {
+class addCommentAreaComponent extends AbstractSmartComponent {
   constructor() {
     super();
     this._addNewCommentTextAreaKeyupHandle = null;
     this._newEmojiClickHandler = null;
+    this._currentEmoji = Emoji.SMILE;
   }
 
   get template() {
@@ -35,7 +36,14 @@ class addCommentAreaComponent extends AbstractComponent {
       if (evt.key !== Key.ENTER && evt.ctrlKey !== true) {
         return;
       }
-      handler();
+      const newComment = {
+        id: 0,
+        emoji: this._currentEmoji,
+        message: evt.target.value,
+        date: Date.now()
+      };
+
+      handler(newComment.id, newComment);
     };
   }
 
@@ -44,6 +52,7 @@ class addCommentAreaComponent extends AbstractComponent {
       if (evt.target.tagName !== `INPUT`) {
         return;
       }
+      this._currentEmoji = evt.target.value;
       handler(evt.target.value);
     };
   }

@@ -48,6 +48,12 @@ class MoviesModel {
     return true;
   }
 
+  addComment(idMovie, newComment) {
+    const index = this._movies.findIndex((it) => it.id === idMovie);
+    this._movies[index].comments.unshift(newComment);
+    return true;
+  }
+
   deleteComment(idMovie, idComment) {
     const index = this._movies.findIndex((it) => it.id === idMovie);
     const indexComment = this._movies[index].comments.findIndex((it) => it.id === idComment);

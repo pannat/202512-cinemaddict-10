@@ -136,7 +136,13 @@ class PageController {
 
   _commentsChangeHandler(idMovie, idComment, newData = null) {
     if (newData) {
-    } else {
+      const isSuccess = this._moviesModel.addComment(idMovie, newData);
+
+      if (isSuccess) {
+        const showedMovieControllersHasCurrentId = this._showedMovieControllers.filter((it) => it.id === idMovie);
+        showedMovieControllersHasCurrentId.forEach((it) => it.addNewComment(newData));
+      }
+    } else if (idComment) {
       const isSuccess = this._moviesModel.deleteComment(idMovie, idComment, newData);
 
       if (isSuccess) {
