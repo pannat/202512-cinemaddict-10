@@ -1,28 +1,11 @@
-import {SortType} from "../const";
-import {render, RenderPosition} from "../utils/render";
+import {SortType, ShowingMovies, ExtraSection} from "../const";
+import {render, remove, RenderPosition} from "../utils/render";
 import SortComponent from "../components/sort";
 import MovieSectionComponent from "../components/movie-section";
 import MovieMainContainerComponent from "../components/movie-main-container";
 import ButtonShowMoreComponent from "../components/button-show-more";
 import MessageNotMovies from "../components/message-not-movies";
 import MovieController from "./movie";
-
-const ExtraSection = {
-  MOST_COMMENTED: {
-    TITLE: `Most commented`,
-    HAS_MODIFIER: true
-  },
-  TOP_RATED: {
-    TITLE: `Top rated`,
-    HAS_MODIFIER: true
-  },
-};
-
-const ShowingMovies = {
-  COUNT_ON_START: 5,
-  COUNT_BY_BUTTON: 5
-};
-
 
 class PageController {
   constructor(container, moviesModel) {
@@ -39,6 +22,7 @@ class PageController {
     this._showedMovieControllers = [];
     this._extraMovies = [];
     this._dataChangeHandler = this._dataChangeHandler.bind(this);
+    this._commentsChangeHandler = this._commentsChangeHandler.bind(this);
     this._viewChangeHandler = this._viewChangeHandler.bind(this);
 
     this._moviesModel.filterChangeHandler = this._filterChangeHandler.bind(this);
@@ -98,8 +82,7 @@ class PageController {
         });
 
         if (this._showingMoviesCount >= data.length) {
-          this._buttonShowMoreComponent.element.remove();
-          this._buttonShowMoreComponent.removeElement();
+          remove(this._buttonShowMoreComponent);
         }
       };
 
@@ -109,7 +92,7 @@ class PageController {
   }
 
   _renderCard(container, movie) {
-    const movieController = new MovieController(container, movie, this._dataChangeHandler, this._viewChangeHandler);
+    const movieController = new MovieController(container, movie, this._dataChangeHandler, this._viewChangeHandler, this._commentsChangeHandler);
     movieController.render();
     this._showedMovieControllers.push(movieController);
     if (movie.isExtra) {
@@ -120,6 +103,7 @@ class PageController {
   _removeMovies() {
     this._containerSectionAllMovies.innerHTML = ``;
     this._showedMovieControllers = this._extraMovies.length ? [].concat(this._extraMovies) : [];
+    remove(this._buttonShowMoreComponent);
   }
 
   _sortClickHandler(sortType) {
@@ -150,6 +134,18 @@ class PageController {
     }
   }
 
+  _commentsChangeHandler(idMovie, idComment, newData = null) {
+    if (newData) {
+    } else {
+      const isSuccess = this._moviesModel.deleteComment(idMovie, idComment, newData);
+
+      if (isSuccess) {
+        const showedMovieControllersHasCurrentId = this._showedMovieControllers.filter((it) => it.id === idMovie);
+        showedMovieControllersHasCurrentId.forEach((it) => it.deleteComment(idComment));
+      }
+    }
+  }
+
   _viewChangeHandler() {
     this._showedMovieControllers.forEach((it) => it.setDefaultView());
   }
@@ -158,7 +154,7 @@ class PageController {
     this._removeMovies();
     this._showedMovieControllers = this._extraMovies.length ? [].concat(this._extraMovies) : [];
     this._showingMoviesCount = ShowingMovies.COUNT_ON_START;
-    this._renderCardsForSectionAllMovies(this._moviesModel.moviesByFilter);
+    this._sortClickHandler(this._sortComponent.currentSortType);
   }
 }
 

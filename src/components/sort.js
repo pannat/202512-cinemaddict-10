@@ -16,6 +16,10 @@ class SortComponent extends AbstractComponent {
   </ul>`;
   }
 
+  get currentSortType() {
+    return this._currentSortType;
+  }
+
   set buttonClickHandler(handler) {
     this._buttonClickHandler = (evt) => {
       evt.preventDefault();

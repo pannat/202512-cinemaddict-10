@@ -1,19 +1,19 @@
 import CardComponent from "../components/card";
 import FullCardComponent from "../components/full-card";
 import CardDetails from "../components/card-details";
-import {Key} from "../const";
-import {render, replace, RenderPosition} from "../utils/render";
+import {Key, Mode} from "../const";
+import {render, remove, replace, RenderPosition} from "../utils/render";
 import CardControls from "../components/card-controls";
 import FullCardControls from "../components/full-card-controls";
 import UserRatingComponent from "../components/user-rating";
-
-const Mode = {
-  DEFAULT: `default`,
-  OPEN_POPUP: `open popup`,
-};
+import CommentsSection from "../components/comments-section";
+import Comment from "../components/comment";
+import AddCommentEmojiComponent from "../components/add-comment-emoji";
+import CommentsTitleComponent from "../components/comments-title";
+import AddCommentAreaComponent from "../components/add-comment-area";
 
 class MovieController {
-  constructor(container, data, dataChangeHandler, viewChangeHandler) {
+  constructor(container, data, dataChangeHandler, viewChangeHandler, commentsChangeHandler) {
     this._container = container;
     this._data = data;
     this._id = data.id;
@@ -23,7 +23,15 @@ class MovieController {
     this._cardDetailsComponent = null;
     this._cardControlsComponent = null;
 
+    this._commentsSection = null;
+    this._commentsTitleComponent = null;
+    this._addCommentAreaComponent = null;
+    this._addCommentEmojiComponent = null;
+
+    this._comments = [];
+
     this._dataChangeHandler = dataChangeHandler;
+    this._commentsChangeHandler = commentsChangeHandler;
     this._viewChangeHandler = viewChangeHandler;
 
     this._closeFullCard = this._closeFullCard.bind(this);
@@ -32,6 +40,8 @@ class MovieController {
     this._controlsClickHandler = this._controlsClickHandler.bind(this);
     this._ratingChangeHandler = this._ratingChangeHandler.bind(this);
     this._resetRatingClickHandler = this._resetRatingClickHandler.bind(this);
+    this._newEmojiClickHandler = this._newEmojiClickHandler.bind(this);
+    this._deleteCommentClickHandler = this._deleteCommentClickHandler.bind(this);
   }
 
   get id() {
@@ -52,6 +62,7 @@ class MovieController {
     this._fullCardComponent.closeClickHandler = this._closeFullCard;
     this._fullCardControlsComponent = new FullCardControls(this._data);
     this._fullCardControlsComponent.dataChangeHandler = this._controlsClickHandler;
+
     if (this._data.isAlreadyWatched) {
       this._userRatingComponent = new UserRatingComponent(this._data.personalRating);
       render(this._fullCardComponent.ratingElement, this._userRatingComponent.element, RenderPosition.BEFOREEND);
@@ -60,6 +71,7 @@ class MovieController {
       render(this._fullCardComponent.middleContainerElement, this._cardDetailsComponent.element, RenderPosition.BEFOREEND);
     }
     render(this._fullCardComponent.element.querySelector(`.form-details__top-container`), this._fullCardControlsComponent.element, RenderPosition.BEFOREEND);
+    this._initializeCommentSection();
 
     this._fullCardComponent.recoveryListeners();
     this._cardComponent.recoveryListeners();
@@ -78,6 +90,12 @@ class MovieController {
     this._fullCardControlsComponent.rerender(data);
   }
 
+  deleteComment(id) {
+    const index = this._comments.findIndex((comment) => comment.id === id);
+    remove(this._comments[index]);
+    this._comments.splice(index, 1);
+  }
+
   setDefaultView() {
     if (this._mode === Mode.OPEN_POPUP) {
       this._closeFullCard();
@@ -90,6 +108,31 @@ class MovieController {
     this._cardDetailsComponent.ratingChangeHandler = this._ratingChangeHandler;
     this._cardDetailsComponent.resetClickHandler = this._resetRatingClickHandler;
     render(this._fullCardComponent.middleContainerElement, this._cardDetailsComponent.element, RenderPosition.BEFOREEND);
+  }
+
+  _initializeCommentSection() {
+    this._commentsSection = new CommentsSection();
+    this._commentsTitleComponent = new CommentsTitleComponent(this._data.comments.length);
+    render(this._commentsSection.element, this._commentsTitleComponent.element, RenderPosition.AFTERBEGIN);
+
+
+    this._renderComments(this._data);
+    this._addCommentAreaComponent = new AddCommentAreaComponent();
+    this._addCommentAreaComponent.addNewCommentTextAreaKeyupHandler = () => {};
+    this._addCommentAreaComponent.newEmojiClickHandler = this._newEmojiClickHandler;
+    this._addCommentAreaComponent.recoveryListeners();
+    render(this._commentsSection.element, this._addCommentAreaComponent.element, RenderPosition.BEFOREEND);
+    render(this._fullCardComponent.commentContainerElement, this._commentsSection.element, RenderPosition.BEFOREEND);
+  }
+
+  _renderComments(data) {
+    data.comments.forEach((comment) => {
+      const commentComponent = new Comment(comment);
+      commentComponent.deleteClickHandler = this._deleteCommentClickHandler;
+      commentComponent.recoveryListeners();
+      this._comments.push(commentComponent);
+      render(this._commentsSection.commentsList, commentComponent.element, RenderPosition.BEFOREEND);
+    });
   }
 
   _closeFullCard() {
@@ -145,6 +188,21 @@ class MovieController {
     render(document.body, this._fullCardComponent.element, RenderPosition.BEFOREEND);
     window.addEventListener(`keydown`, this._keydownPressHandler);
     this._mode = Mode.OPEN_POPUP;
+  }
+
+  _newEmojiClickHandler(emoji) {
+    const oldAddCommentEmojiComponent = this._addCommentEmojiComponent;
+    this._addCommentEmojiComponent = new AddCommentEmojiComponent(emoji);
+
+    if (oldAddCommentEmojiComponent) {
+      replace(this._addCommentEmojiComponent, oldAddCommentEmojiComponent);
+    } else {
+      render(this._addCommentAreaComponent.addEmojiContainer, this._addCommentEmojiComponent.element, RenderPosition.BEFOREEND);
+    }
+  }
+
+  _deleteCommentClickHandler(idComment) {
+    this._commentsChangeHandler(this.id, idComment);
   }
 }
 

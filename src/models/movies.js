@@ -48,14 +48,11 @@ class MoviesModel {
     return true;
   }
 
-  updateComment(index, idComment, newComment) {
-    let comments = this._movies[index].comments
-    const indexComment = comments.findIndex((it) => it.id === newComment.id);
-    if (newComment) {
-      comments = [].concat(comments.slice(0, indexComment), newComment, indexComment.slice(index + 1));
-    } else {
-      comments = [].concat(comments.slice(0, indexComment), indexComment.slice(index + 1));
-    }
+  deleteComment(idMovie, idComment) {
+    const index = this._movies.findIndex((it) => it.id === idMovie);
+    const indexComment = this._movies[index].comments.findIndex((it) => it.id === idComment);
+    this._movies[index].comments.splice(indexComment, 1);
+    return true;
   }
 }
 
