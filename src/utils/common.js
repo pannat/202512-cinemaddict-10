@@ -9,4 +9,17 @@ const formatRuntime = (min) => {
   return `${ hours ? `${hours}h` : ``}${ min > 0 ? ` ${min}m` : ``}`.trim();
 };
 
-export {capitalizeFirstLetter, formatRuntime};
+const calculateUserRank = (count) => {
+  let rank = ``;
+  if (count > 0 && count < 10) {
+    rank = `novice`;
+  } else if (count > 10 && count < 20) {
+    rank = `fan`;
+  } else if (count > 20) {
+    rank = `movie buff`;
+  }
+
+  return rank;
+}
+
+export {capitalizeFirstLetter, formatRuntime, calculateUserRank};

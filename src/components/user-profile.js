@@ -1,9 +1,10 @@
 import AbstractComponent from "./abstract-component";
+import {calculateUserRank} from "../utils/common";
 
 class UserProfileComponent extends AbstractComponent {
   constructor(count) {
     super();
-    this._userRank = this.calculateUserRank(count);
+    this._userRank = calculateUserRank(count);
   }
 
   get template() {
@@ -13,18 +14,7 @@ class UserProfileComponent extends AbstractComponent {
   </section>`;
   }
 
-  calculateUserRank(count) {
-    let rank = ``;
-    if (count > 0 && count < 10) {
-      rank = `novice`;
-    } else if (count > 10 && count < 20) {
-      rank = `fan`;
-    } else if (count > 20) {
-      rank = `movie buff`;
-    }
 
-    return rank;
-  }
 }
 
 export default UserProfileComponent;
