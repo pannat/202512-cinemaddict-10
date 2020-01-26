@@ -67,6 +67,16 @@ class PageController {
     render(this._container, this._movieMainContainerComponent.element, RenderPosition.BEFOREEND);
   }
 
+  show() {
+    this._movieMainContainerComponent.show();
+    this._sortComponent.show();
+  }
+
+  hide() {
+    this._movieMainContainerComponent.hide();
+    this._sortComponent.hide();
+  }
+
   _renderCardsForSectionAllMovies(data) {
     data.slice(0, ShowingMovies.COUNT_ON_START).forEach((movie) => {
       this._renderCard(this._containerSectionAllMovies, movie);

@@ -1,4 +1,5 @@
 import {createElement} from "../utils/render";
+import {HIDDEN_CLASS} from "../const";
 
 class AbstractComponent {
   constructor() {
@@ -10,7 +11,7 @@ class AbstractComponent {
 
 
   get template() {
-    throw new Error(`Abstract method not implemented: getTemplate`);
+    throw new Error(`Abstract method not implemented: get template`);
   }
 
   get element() {
@@ -23,6 +24,18 @@ class AbstractComponent {
 
   removeElement() {
     this._element = null;
+  }
+
+  show() {
+    if (this._element) {
+      this._element.classList.remove(HIDDEN_CLASS);
+    }
+  }
+
+  hide() {
+    if (this._element) {
+      this._element.classList.add(HIDDEN_CLASS);
+    }
   }
 }
 

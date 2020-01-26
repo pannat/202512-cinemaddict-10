@@ -1,5 +1,12 @@
 const RATING_POINTS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+const HIDDEN_CLASS = `visually-hidden`;
+
+const SCREEN = {
+  STATS: `stats`,
+  MOVIES: `movies`
+};
+
 const ExtraSection = {
   MOST_COMMENTED: {
     TITLE: `Most commented`,
@@ -53,6 +60,6 @@ const Mode = {
   OPEN_POPUP: `open popup`,
 };
 
-export {RATING_POINTS, ShowingMovies, ExtraSection, FilterType, ControlType, SortType, Key, Emoji, Mode};
+export {RATING_POINTS, ShowingMovies, ExtraSection, FilterType, ControlType, SortType, Key, Emoji, Mode, HIDDEN_CLASS, SCREEN};
 
 

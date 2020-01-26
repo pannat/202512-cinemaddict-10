@@ -151,7 +151,7 @@ class MovieController {
   _closeFullCard() {
     window.removeEventListener(`keydown`, this._keydownPressHandler);
     this._fullCardComponent.element.remove();
-    document.body.classList.add(`hide-overflow`);
+    document.body.classList.remove(`hide-overflow`);
     this._mode = Mode.DEFAULT;
   }
 
