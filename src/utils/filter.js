@@ -23,6 +23,6 @@ const getMoviesByFilter = (movies, filterType) => {
   }
 
   return movies;
-}
+};
 
 export {getWatchlistMovies, getHistoryMovies, getFavoriteMovies, getMoviesByFilter};

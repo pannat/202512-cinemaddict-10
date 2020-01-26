@@ -15,7 +15,7 @@ class FilterComponent extends AbstractComponent {
     `).join(``)}
     <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
   </nav>`;
-  };
+  }
 
   set filterChangeHandler(handler) {
     this._filterChangeHandler = (evt) => {

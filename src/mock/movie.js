@@ -110,7 +110,7 @@ const getRandomIntegerNumber = (min, max) => {
 };
 
 let id = 0;
-let commentId = 0
+let commentId = 0;
 
 const getMovie = () => (
   {
