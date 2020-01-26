@@ -1,10 +1,11 @@
-import {Key, Emoji} from "../const";
+import {Emoji} from "../const";
+import he from "he";
 import AbstractSmartComponent from "./abstract-smart-component";
 
 class addCommentAreaComponent extends AbstractSmartComponent {
   constructor() {
     super();
-    this._addNewCommentTextAreaKeyupHandle = null;
+    this._textarea = null;
     this._newEmojiClickHandler = null;
     this._currentEmoji = Emoji.SMILE;
   }
@@ -27,24 +28,17 @@ class addCommentAreaComponent extends AbstractSmartComponent {
         </div>`;
   }
 
-  get addEmojiContainer() {
-    return this.element.querySelector(`.film-details__add-emoji-label`);
+  get currentEmoji() {
+    return this._currentEmoji;
   }
 
-  set addNewCommentTextAreaKeyupHandler(handler) {
-    this._addNewCommentTextAreaKeyupHandle = (evt) => {
-      if (evt.key !== Key.ENTER && evt.ctrlKey !== true) {
-        return;
-      }
-      const newComment = {
-        id: 0,
-        emoji: this._currentEmoji,
-        message: evt.target.value,
-        date: Date.now()
-      };
+  get userMessage() {
+    const message = this.element.querySelector(`.film-details__comment-input`).value;
+    return he.encode(message);
+  }
 
-      handler(newComment.id, newComment);
-    };
+  get addEmojiContainer() {
+    return this.element.querySelector(`.film-details__add-emoji-label`);
   }
 
   set newEmojiClickHandler(handler) {
@@ -58,7 +52,6 @@ class addCommentAreaComponent extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.element.querySelector(`.film-details__comment-input`).addEventListener(`keyup`, this._addNewCommentTextAreaKeyupHandle);
     this.element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, this._newEmojiClickHandler);
   }
 }

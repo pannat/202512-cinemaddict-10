@@ -142,7 +142,7 @@ class PageController {
         const showedMovieControllersHasCurrentId = this._showedMovieControllers.filter((it) => it.id === idMovie);
         showedMovieControllersHasCurrentId.forEach((it) => it.addNewComment(newData));
       }
-    } else if (idComment) {
+    } else {
       const isSuccess = this._moviesModel.deleteComment(idMovie, idComment, newData);
 
       if (isSuccess) {

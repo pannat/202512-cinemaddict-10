@@ -1,6 +1,7 @@
 import AbstractSmartComponent from "./abstract-smart-component";
 import {capitalizeFirstLetter} from "../utils/common";
 import moment from "moment";
+import {Key} from "../const";
 
 class FullCardComponent extends AbstractSmartComponent {
   constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, ageLimit}) {
@@ -19,6 +20,7 @@ class FullCardComponent extends AbstractSmartComponent {
     this._ageLimit = ageLimit;
 
     this._closeClickHandler = null;
+    this._formSubmitHandler = null;
   }
 
   get template() {
@@ -92,6 +94,16 @@ class FullCardComponent extends AbstractSmartComponent {
 </section>`;
   }
 
+  set formSubmitHandler(handler) {
+    this._formSubmitHandler = (evt) => {
+      if (evt.key !== Key.ENTER || !evt.ctrlKey) {
+        return;
+      }
+
+      handler();
+    };
+  }
+
   set closeClickHandler(handler) {
     this._closeClickHandler = handler;
   }
@@ -110,6 +122,7 @@ class FullCardComponent extends AbstractSmartComponent {
 
   recoveryListeners() {
     this.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._closeClickHandler);
+    this.element.querySelector(`form`).addEventListener(`keyup`, this._formSubmitHandler);
   }
 }
 
