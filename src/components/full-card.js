@@ -1,5 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component";
 import {capitalizeFirstLetter} from "../utils/common";
+import {formatRuntime} from "../utils/common";
 import moment from "moment";
 import {Key} from "../const";
 
@@ -12,7 +13,7 @@ class FullCardComponent extends AbstractSmartComponent {
     this._writers = writers;
     this._actors = actors;
     this._releaseDate = moment(releaseDate).format(`DD MMMM YYYY`);
-    this._runtime = runtime;
+    this._runtime = formatRuntime(runtime);
     this._country = country;
     this._genres = genres;
     this._rating = rating;

@@ -4,10 +4,13 @@ import {calculateUserRank} from "../utils/common";
 class StatsComponent extends AbstractSmartComponent {
   constructor(countWatchedMovies, timeSpent, topGenre) {
     super();
-    this._countWatchedMovies = countWatchedMovies;
-    this._timeSpent = timeSpent;
-    this._topGenre = topGenre;
-    this._userRank = calculateUserRank(countWatchedMovies);
+    // this._countWatchedMovies = countWatchedMovies;
+    // this._timeSpent = timeSpent;
+    // this._topGenre = topGenre;
+    // this._userRank = calculateUserRank(countWatchedMovies);
+    // this._filterChangeHandler = null;
+
+    this.recoveryListeners();
   }
 
   get template() {
@@ -57,6 +60,18 @@ class StatsComponent extends AbstractSmartComponent {
     </div>
 
   </section>`;
+  }
+
+  get ctx() {
+    return this.element.querySelector(`.statistic__chart`);
+  }
+
+  set filterChangeHandler(handler) {
+    this._filterChangeHandler = handler;
+  }
+
+  recoveryListeners() {
+    this.element.querySelector(`form`).addEventListener(`change`, this._filterChangeHandler);
   }
 }
 

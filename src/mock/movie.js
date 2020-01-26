@@ -1,5 +1,3 @@
-import {formatRuntime} from "../utils/common";
-
 const titleItems = [
   `Gisaengchung`,
   `Manbiki kazoku`,
@@ -122,7 +120,7 @@ const getMovie = () => (
     writers: getRandomNewArray(writers),
     actors: getRandomNewArray(actors),
     releaseDate: getRandomDate(),
-    runtime: formatRuntime(getRandomIntegerNumber(0, 181)),
+    runtime: getRandomIntegerNumber(0, 181),
     country: getRandomArrayItem(countries),
     rating: Number(`${getRandomIntegerNumber(0, 10)}.${getRandomIntegerNumber(0, 10)}`),
     genres: getRandomNewArray(genres),

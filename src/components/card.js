@@ -1,4 +1,4 @@
-import {capitalizeFirstLetter} from "../utils/common";
+import {capitalizeFirstLetter, formatRuntime} from "../utils/common";
 import AbstractSmartComponent from "./abstract-smart-component";
 
 const MAX_DESCRIPTION_LENGTH = 140;
@@ -10,7 +10,7 @@ class CardComponent extends AbstractSmartComponent {
     this._poster = poster;
     this._rating = rating;
     this._releaseDate = releaseDate;
-    this._runtime = runtime;
+    this._runtime = formatRuntime(runtime);
     this._genres = genres;
     this._description = description.length > 140 ? `${description.slice(0, MAX_DESCRIPTION_LENGTH)}...` : description;
     this._comments = comments;

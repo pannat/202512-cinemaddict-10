@@ -12,6 +12,7 @@ const getFavoriteMovies = (movies) => {
   return movies.filter((it) => it.isFavorite);
 };
 
+
 const getMoviesByFilter = (movies, filterType) => {
   switch (filterType) {
     case FilterType.WATCHLIST:
