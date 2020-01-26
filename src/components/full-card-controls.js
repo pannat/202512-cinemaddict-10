@@ -1,5 +1,5 @@
 import ControlsComponent from "./controls";
-import {ControlType} from "../utils";
+import {ControlType} from "../const";
 
 class FullCardControlsComponent extends ControlsComponent {
   constructor({isAddedWatchlist, isAlreadyWatched, isFavorite}) {

@@ -1,10 +1,11 @@
 import AbstractComponent from "./abstract-component";
-import {SortType} from "../utils";
+import {SortType} from "../const";
 
 class SortComponent extends AbstractComponent {
   constructor() {
     super();
     this._currentSortType = SortType.DEFAULT;
+    this._buttonClickHandler = null;
   }
 
   get template() {
@@ -15,8 +16,12 @@ class SortComponent extends AbstractComponent {
   </ul>`;
   }
 
-  setClickHandler(handler) {
-    this.element.addEventListener(`click`, (evt) => {
+  get currentSortType() {
+    return this._currentSortType;
+  }
+
+  set buttonClickHandler(handler) {
+    this._buttonClickHandler = (evt) => {
       evt.preventDefault();
 
       if (evt.target.tagName !== `A`) {
@@ -34,7 +39,11 @@ class SortComponent extends AbstractComponent {
       this._currentSortType = sortType;
 
       handler(this._currentSortType);
-    });
+    };
+  }
+
+  recoveryListeners() {
+    this.element.addEventListener(`click`, this._buttonClickHandler);
   }
 }
 

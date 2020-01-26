@@ -1,9 +1,10 @@
 import AbstractSmartComponent from "./abstract-smart-component";
-import {capitalizeFirstLetter} from "../utils";
+import {capitalizeFirstLetter} from "../utils/common";
 import moment from "moment";
+import {Key} from "../const";
 
 class FullCardComponent extends AbstractSmartComponent {
-  constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, comments, ageLimit}) {
+  constructor({title, poster, director, writers, actors, releaseDate, runtime, country, genres, rating, description, ageLimit}) {
     super();
     this._title = title;
     this._poster = poster;
@@ -16,10 +17,10 @@ class FullCardComponent extends AbstractSmartComponent {
     this._genres = genres;
     this._rating = rating;
     this._description = description;
-    this._comments = comments;
     this._ageLimit = ageLimit;
 
     this._closeClickHandler = null;
+    this._formSubmitHandler = null;
   }
 
   get template() {
@@ -88,75 +89,40 @@ class FullCardComponent extends AbstractSmartComponent {
     </div>
     <div class="form-details__middle-container"></div>
     <div class="form-details__bottom-container">
-      <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._comments.length}</span></h3>
-
-        <ul class="film-details__comments-list">
-
-        ${this._comments.map((comment) => `<li class="film-details__comment">
-            <span class="film-details__comment-emoji">
-              <img src="./images/emoji/${comment.emoji}.png" width="55" height="55" alt="emoji">
-            </span>
-            <div>
-              <p class="film-details__comment-text">${comment.message}</p>
-              <p class="film-details__comment-info">
-                <span class="film-details__comment-author">${comment.author}</span>
-                <span class="film-details__comment-day">${moment(comment.date).format(`YYYY/MM/DD HH:MM`)}</span>
-                <button class="film-details__comment-delete">Delete</button>
-              </p>
-            </div>
-          </li>`).join(``)}
-        </ul>
-
-        <div class="film-details__new-comment">
-          <div for="add-emoji" class="film-details__add-emoji-label"></div>
-
-          <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
-          </label>
-
-          <div class="film-details__emoji-list">
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="sleeping">
-            <label class="film-details__emoji-label" for="emoji-smile">
-              <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-            </label>
-
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="neutral-face">
-            <label class="film-details__emoji-label" for="emoji-sleeping">
-              <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-            </label>
-
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-gpuke" value="grinning">
-            <label class="film-details__emoji-label" for="emoji-gpuke">
-              <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-            </label>
-
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="grinning">
-            <label class="film-details__emoji-label" for="emoji-angry">
-              <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-            </label>
-          </div>
-        </div>
-      </section>
     </div>
   </form>
 </section>`;
+  }
+
+  set formSubmitHandler(handler) {
+    this._formSubmitHandler = (evt) => {
+      if (evt.key !== Key.ENTER || !evt.ctrlKey) {
+        return;
+      }
+
+      handler();
+    };
   }
 
   set closeClickHandler(handler) {
     this._closeClickHandler = handler;
   }
 
-  get middleContainerElement() {
-    return this.element.querySelector(`.form-details__middle-container`);
-  }
-
   get ratingElement() {
     return this.element.querySelector(`.film-details__rating`);
   }
 
+  get middleContainerElement() {
+    return this.element.querySelector(`.form-details__middle-container`);
+  }
+
+  get commentContainerElement() {
+    return this.element.querySelector(`.form-details__bottom-container`);
+  }
+
   recoveryListeners() {
     this.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, this._closeClickHandler);
+    this.element.querySelector(`form`).addEventListener(`keyup`, this._formSubmitHandler);
   }
 }
 

@@ -1,5 +1,7 @@
-import {capitalizeFirstLetter} from "../utils";
+import {capitalizeFirstLetter} from "../utils/common";
 import AbstractSmartComponent from "./abstract-smart-component";
+
+const MAX_DESCRIPTION_LENGTH = 140;
 
 class CardComponent extends AbstractSmartComponent {
   constructor({title, poster, rating, releaseDate, runtime, genres, description, comments}) {
@@ -10,7 +12,7 @@ class CardComponent extends AbstractSmartComponent {
     this._releaseDate = releaseDate;
     this._runtime = runtime;
     this._genres = genres;
-    this._description = description.length > 140 ? `${description.slice(0, 140)}...` : description;
+    this._description = description.length > 140 ? `${description.slice(0, MAX_DESCRIPTION_LENGTH)}...` : description;
     this._comments = comments;
 
     this._descriptionClickHandler = null;

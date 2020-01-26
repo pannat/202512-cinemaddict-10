@@ -1,35 +1,25 @@
-import MenuComponent from "./components/menu";
-import Page from "./controllers/page";
+import MoviesModel from "./models/movies";
+import PageController from "./controllers/page";
+import FilterController from "./controllers/filter";
 import UserProfile from "./components/user-profile";
 import {getMovie, getRandomIntegerNumber} from "./mock/movie";
 import {RenderPosition, render} from "./utils/render";
+import {getMoviesByFilter} from "./utils/filter";
+import {FilterType} from "./const";
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
-const MOVIES_COUNT = getRandomIntegerNumber(0, 15);
+const MOVIES_COUNT = getRandomIntegerNumber(1, 10);
 
 const mocksData = [...Array(MOVIES_COUNT)].map(getMovie);
+const moviesModel = new MoviesModel();
+moviesModel.movies = mocksData;
 
-const filters = [{
-  name: `watchlist`,
-  count: mocksData.filter((mock) => mock.isAddedWatchlist).length
-},
-{
-  name: `history`,
-  count: mocksData.filter((mock) => mock.isAlreadyWatched).length
-},
-{
-  name: `favorites`,
-  count: mocksData.filter((mock) => mock.isFavorite).length
-}];
-
-const totalAlreadyWatchedMovies = filters.find((it) => it.name === `history`).count;
-
-const userProfile = new UserProfile(totalAlreadyWatchedMovies);
+const userProfile = new UserProfile(getMoviesByFilter(moviesModel.allMovies, FilterType.HISTORY).length);
 render(headerElement, userProfile.element, RenderPosition.BEFOREEND);
 
-const menuComponent = new MenuComponent(filters);
-render(mainElement, menuComponent.element, RenderPosition.AFTERBEGIN);
+const filterController = new FilterController(mainElement, moviesModel);
+filterController.render();
 
-const pageController = new Page(mainElement, mocksData);
+const pageController = new PageController(mainElement, moviesModel);
 pageController.render();

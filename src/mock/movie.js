@@ -1,3 +1,5 @@
+import {formatRuntime} from "../utils/common";
+
 const titleItems = [
   `Gisaengchung`,
   `Manbiki kazoku`,
@@ -91,15 +93,6 @@ const genres = [
   `historical`
 ];
 
-const formatRuntime = (min) => {
-  let hours = 0;
-  if (min > 60) {
-    hours = Math.floor(min / 60);
-    min = min - (60 * hours);
-  }
-  return `${ hours ? `${hours}h` : ``}${ min > 0 ? ` ${min}m` : ``}`.trim();
-};
-
 const getRandomDate = () => Date.now() - getRandomIntegerNumber(0, 18250) * 24 * 60 * 60 * 1000;
 
 
@@ -117,6 +110,7 @@ const getRandomIntegerNumber = (min, max) => {
 };
 
 let id = 0;
+let commentId = 0;
 
 const getMovie = () => (
   {
@@ -138,6 +132,7 @@ const getMovie = () => (
     isAlreadyWatched: Boolean(getRandomIntegerNumber(0, 2)),
     personalRating: getRandomIntegerNumber(1, 10),
     comments: [...Array(getRandomIntegerNumber(0, 10))].map(() => ({
+      id: commentId++,
       author: getRandomArrayItem(writers),
       message: getRandomNewArray(descriptionItems).join(``),
       date: getRandomDate(),
