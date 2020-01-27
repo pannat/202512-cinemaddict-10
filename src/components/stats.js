@@ -1,14 +1,16 @@
 import AbstractSmartComponent from "./abstract-smart-component";
-import {calculateUserRank} from "../utils/common";
+import {calculateUserRank, capitalizeFirstLetter} from "../utils/common";
+import {RangesStats} from "../const";
 
 class StatsComponent extends AbstractSmartComponent {
   constructor(countWatchedMovies, timeSpent, topGenre) {
     super();
-    // this._countWatchedMovies = countWatchedMovies;
-    // this._timeSpent = timeSpent;
-    // this._topGenre = topGenre;
-    // this._userRank = calculateUserRank(countWatchedMovies);
-    // this._filterChangeHandler = null;
+    this._countWatchedMovies = countWatchedMovies;
+    this._timeSpent = timeSpent;
+    this._topGenre = topGenre;
+    this._userRank = calculateUserRank(countWatchedMovies);
+    this._currentRange = RangesStats.ALL_TIME;
+    this._filterChangeHandler = null;
 
     this.recoveryListeners();
   }
@@ -23,21 +25,9 @@ class StatsComponent extends AbstractSmartComponent {
 
     <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
       <p class="statistic__filters-description">Show stats:</p>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-all-time" value="all-time" checked="">
-      <label for="statistic-all-time" class="statistic__filters-label">All time</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-today" value="today">
-      <label for="statistic-today" class="statistic__filters-label">Today</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-week" value="week">
-      <label for="statistic-week" class="statistic__filters-label">Week</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-month" value="month">
-      <label for="statistic-month" class="statistic__filters-label">Month</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-year" value="year">
-      <label for="statistic-year" class="statistic__filters-label">Year</label>
+        ${Object.keys(RangesStats).map((range) => `<input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-${RangesStats[range]}" value="${RangesStats[range]}"
+            ${RangesStats[range] === this._currentRange ? `checked` : ``}>
+      <label for="statistic-${RangesStats[range]}" class="statistic__filters-label">${capitalizeFirstLetter(RangesStats[range])}</label>`).join(``)}
     </form>
 
     <ul class="statistic__text-list">
@@ -51,7 +41,7 @@ class StatsComponent extends AbstractSmartComponent {
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
-        <p class="statistic__item-text">Sci-Fi</p>
+        <p class="statistic__item-text">${this._topGenre}</p>
       </li>
     </ul>
 
@@ -67,7 +57,20 @@ class StatsComponent extends AbstractSmartComponent {
   }
 
   set filterChangeHandler(handler) {
-    this._filterChangeHandler = handler;
+    this._filterChangeHandler = (evt) => {
+      if (evt.target.tagName !== `INPUT`) {
+        return;
+      }
+      this._currentRange = evt.target.value;
+      handler(evt.target.value);
+    };
+  }
+
+  rerender(countWatchedMovies, timeSpent, topGenre) {
+    this._countWatchedMovies = countWatchedMovies;
+    this._timeSpent = timeSpent;
+    this._topGenre = topGenre;
+    super.rerender();
   }
 
   recoveryListeners() {

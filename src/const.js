@@ -30,6 +30,14 @@ const FilterType = {
   FAVORITES: `Favorites`
 };
 
+const RangesStats = {
+  ALL_TIME: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`
+};
+
 const ControlType = {
   FAVORITE: `favorite`,
   WATCHLIST: `watchlist`,
@@ -60,6 +68,6 @@ const Mode = {
   OPEN_POPUP: `open popup`,
 };
 
-export {RATING_POINTS, ShowingMovies, ExtraSection, FilterType, ControlType, SortType, Key, Emoji, Mode, HIDDEN_CLASS, SCREEN};
+export {RATING_POINTS, HIDDEN_CLASS, SCREEN, ShowingMovies, ExtraSection, FilterType, RangesStats, ControlType, SortType, Key, Emoji, Mode};
 
 

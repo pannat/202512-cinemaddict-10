@@ -1,6 +1,7 @@
 import StatsComponent from "../components/stats";
 import {render, RenderPosition} from "../utils/render";
-import {capitalizeFirstLetter} from "../utils/common";
+import {getHistoryMovies} from "../utils/filter";
+// import {capitalizeFirstLetter, formatRuntime} from "../utils/common";
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
@@ -13,35 +14,34 @@ class StatsController {
   }
 
   render() {
-    this._statsComponent = new StatsComponent();
-    render(this._container, this._statsComponent.element, RenderPosition.BEFOREEND);
-    this.renderChart();
-  }
+    const movies = getHistoryMovies(this._moviesModel.allMovies);
 
-  show() {
-    this._statsComponent.show();
-  }
-
-  hide() {
-    this._statsComponent.hide();
-  }
-
-  renderChart() {
-    const movies = this._moviesModel.allMovies;
-
-    const genres = this._moviesModel.allMovies.map((movie) => movie.genres).flat();
+    const genres = movies.map((movie) => movie.genres).flat();
     const uniqueGenres = Array.from(new Set(genres));
+    const countMovies = [];
+    const entitiesGenre = uniqueGenres.map((genre) => {
+      const count = movies.filter((movie) => movie.genres.some((it) => it === genre)).length;
+      countMovies.push(count);
+      return {
+        genre,
+        count
+      };
+    });
 
-    const getCountMovies = (genre) => {
-      return movies.filter((movie) => movie.genres.some((it) => it === genre)).length;
-    };
-    const countMovies = uniqueGenres.map(getCountMovies);
+    const topGenre = entitiesGenre.sort((a, b) => b.count - a.count)[0].genre;
+    const fullRuntime = movies.map((it) => it.runtime).reduce((acc, time) => acc + time);
+    const countWatchedMovies = movies.length;
 
-    const allTime = movies.reduce((acc, movie) => acc + +movie.runtime);
-    console.log(movies.forEach((it) => console.log(it.runtime)));
+    if (this._statsComponent && this._chart) {
+      this._statsComponent.rerender(countWatchedMovies, fullRuntime, topGenre)
+    } else {
+      this._statsComponent = new StatsComponent(countWatchedMovies, fullRuntime, topGenre);
+      render(this._container, this._statsComponent.element, RenderPosition.BEFOREEND);
+      this.renderChart(countMovies, uniqueGenres);
+    }
+  }
 
-
-
+  renderChart(countMovies, uniqueGenres) {
     this._chart = new Chart(this._statsComponent.ctx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
@@ -102,6 +102,14 @@ class StatsController {
         }
       },
     });
+  }
+
+  show() {
+    this._statsComponent.show();
+  }
+
+  hide() {
+    this._statsComponent.hide();
   }
 }
 
