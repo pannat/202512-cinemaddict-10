@@ -68,6 +68,13 @@ const Mode = {
   OPEN_POPUP: `open popup`,
 };
 
-export {RATING_POINTS, HIDDEN_CLASS, SCREEN, ShowingMovies, ExtraSection, FilterType, RangesStats, ControlType, SortType, Key, Emoji, Mode};
+const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
+
+export {RATING_POINTS, HIDDEN_CLASS, SCREEN, ShowingMovies, ExtraSection, FilterType, RangesStats, ControlType, SortType, Key, Emoji, Mode, Method};
 
 
