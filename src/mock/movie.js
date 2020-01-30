@@ -107,36 +107,36 @@ const getRandomIntegerNumber = (min, max) => {
   return min + Math.floor(max * Math.random());
 };
 
-let id = 0;
-let commentId = 0;
+// let id = 0;
+// let commentId = 0;
+//
+// const getMovie = () => (
+//   {
+//     id: id++,
+//     title: getRandomArrayItem(titleItems),
+//     poster: getRandomArrayItem(posterNames),
+//     description: getRandomNewArray(descriptionItems).join(``),
+//     director: getRandomArrayItem(directors),
+//     writers: getRandomNewArray(writers),
+//     actors: getRandomNewArray(actors),
+//     releaseDate: getRandomDate(),
+//     runtime: getRandomIntegerNumber(0, 181),
+//     country: getRandomArrayItem(countries),
+//     rating: Number(`${getRandomIntegerNumber(0, 10)}.${getRandomIntegerNumber(0, 10)}`),
+//     genres: getRandomNewArray(genres),
+//     ageLimit: getRandomArrayItem(ageLimits),
+//     isFavorite: Boolean(getRandomIntegerNumber(0, 2)),
+//     isAddedWatchlist: Boolean(getRandomIntegerNumber(0, 2)),
+//     isAlreadyWatched: Boolean(getRandomIntegerNumber(0, 2)),
+//     personalRating: getRandomIntegerNumber(1, 10),
+//     comments: [...Array(getRandomIntegerNumber(0, 10))].map(() => ({
+//       id: commentId++,
+//       author: getRandomArrayItem(writers),
+//       message: getRandomNewArray(descriptionItems).join(``),
+//       date: getRandomDate(),
+//       emoji: getRandomArrayItem(emojiPictures)
+//     }))
+//   }
+// );
 
-const getMovie = () => (
-  {
-    id: id++,
-    title: getRandomArrayItem(titleItems),
-    poster: getRandomArrayItem(posterNames),
-    description: getRandomNewArray(descriptionItems).join(``),
-    director: getRandomArrayItem(directors),
-    writers: getRandomNewArray(writers),
-    actors: getRandomNewArray(actors),
-    releaseDate: getRandomDate(),
-    runtime: getRandomIntegerNumber(0, 181),
-    country: getRandomArrayItem(countries),
-    rating: Number(`${getRandomIntegerNumber(0, 10)}.${getRandomIntegerNumber(0, 10)}`),
-    genres: getRandomNewArray(genres),
-    ageLimit: getRandomArrayItem(ageLimits),
-    isFavorite: Boolean(getRandomIntegerNumber(0, 2)),
-    isAddedWatchlist: Boolean(getRandomIntegerNumber(0, 2)),
-    isAlreadyWatched: Boolean(getRandomIntegerNumber(0, 2)),
-    personalRating: getRandomIntegerNumber(1, 10),
-    comments: [...Array(getRandomIntegerNumber(0, 10))].map(() => ({
-      id: commentId++,
-      author: getRandomArrayItem(writers),
-      message: getRandomNewArray(descriptionItems).join(``),
-      date: getRandomDate(),
-      emoji: getRandomArrayItem(emojiPictures)
-    }))
-  }
-);
-
-export {getMovie, getRandomIntegerNumber};
+export {getRandomIntegerNumber};

@@ -1,5 +1,5 @@
 import {Method} from "./const";
-import Movies from "./models/movies";
+import Movie from "./models/movie";
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
@@ -16,19 +16,19 @@ const API = class {
   }
 
   getMovies() {
-    return this._load({url: `tasks`})
+    return this._load({url: `movies`})
       .then((response) => response.json())
-      .then(Movie.parse);
+      .then(Movie.parseMovies);
   }
 
-  createTask(task) {
-  }
-
-  updateTask(id, data) {
-  }
-
-  deleteTask(id) {
-  }
+  // createTask(task) {
+  // }
+  //
+  // updateTask(id, data) {
+  // }
+  //
+  // deleteTask(id) {
+  // }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);

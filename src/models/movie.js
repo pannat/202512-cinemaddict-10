@@ -9,16 +9,17 @@ class Movie {
     this.director = data[`film_info`][`director`];
     this.writers = data[`film_info`][`writers`];
     this.actors = data[`film_info`][`actors`];
-    this.releaseDate = data[`release`][`date`];
-    this.country = data[`release`][`release_country`];
-    this.runtime = data[`runtime`];
-    this.description = data[`description`];
-    this.personalRating = data[`user-details`][`personal_rating`];
-    this.isFavorite = data[`user-details`][`favorite`];
-    this.isAddedWatchlist = data[`user-details`][`watchlist`];
-    this.isAlreadyWatched = data[`user-details`][`already_watched`];
-    this.watchingDate = data[`user-details`][`watching_date`];
-    this.comments = data[`user-details`][`comments`];
+    this.releaseDate = data[`film_info`][`release`][`date`];
+    this.country = data[`film_info`][`release`][`release_country`];
+    this.runtime = data[`film_info`][`runtime`];
+    this.genres = data[`film_info`][`genre`];
+    this.description = data[`film_info`][`description`];
+    this.personalRating = data[`user_details`][`personal_rating`];
+    this.isFavorite = Boolean(data[`user_details`][`favorite`]);
+    this.isAddedWatchlist = Boolean(data[`user_details`][`watchlist`]);
+    this.isAlreadyWatched = Boolean(data[`user_details`][`already_watched`]);
+    this.watchingDate = data[`user_details`][`watching_date`] ? new Date(data[`user_details`][`watching_date`]) : null;
+    this.comments = data[`comments`];
   }
 
   toRAW() {

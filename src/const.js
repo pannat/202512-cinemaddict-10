@@ -7,6 +7,10 @@ const SCREEN = {
   MOVIES: `movies`
 };
 
+const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=`;
+
+const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
+
 const ExtraSection = {
   MOST_COMMENTED: {
     TITLE: `Most commented`,
@@ -75,6 +79,7 @@ const Method = {
   DELETE: `DELETE`
 };
 
-export {RATING_POINTS, HIDDEN_CLASS, SCREEN, ShowingMovies, ExtraSection, FilterType, RangesStats, ControlType, SortType, Key, Emoji, Mode, Method};
+export {RATING_POINTS, HIDDEN_CLASS, SCREEN, AUTHORIZATION, END_POINT, ShowingMovies, ExtraSection, FilterType,
+  RangesStats, ControlType, SortType, Key, Emoji, Mode, Method};
 
 
