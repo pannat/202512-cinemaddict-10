@@ -21,7 +21,7 @@ class CardDetailsComponent extends AbstractSmartComponent {
     </div>
     <div class="film-details__user-score">
             <div class="film-details__user-rating-poster">
-              <img src="./images/posters/${this._poster}" alt="film-poster" class="film-details__user-rating-img">
+              <img src="${this._poster}" alt="film-poster" class="film-details__user-rating-img">
             </div>
 
             <section class="film-details__user-rating-inner">

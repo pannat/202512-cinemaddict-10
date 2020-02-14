@@ -7,7 +7,7 @@ const SCREEN = {
   MOVIES: `movies`
 };
 
-const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=`;
+const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=${Math.random()}`;
 
 const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
 

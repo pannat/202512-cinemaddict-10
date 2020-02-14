@@ -129,7 +129,6 @@ class MovieController {
     this._commentsSection = new CommentsSection();
     this._commentsTitleComponent = new CommentsTitleComponent(this._data.comments.length);
     render(this._commentsSection.element, this._commentsTitleComponent.element, RenderPosition.AFTERBEGIN);
-
     this._data.comments.forEach((comment) => {
       this._renderComment(comment);
     });

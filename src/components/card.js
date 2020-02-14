@@ -27,7 +27,7 @@ class CardComponent extends AbstractSmartComponent {
             <span class="film-card__duration">${this._runtime}</span>
             <span class="film-card__genre">${capitalizeFirstLetter(this._genres[0])}</span>
           </p>
-          <img src="./images/posters/${this._poster}" alt="" class="film-card__poster">
+          <img src="${this._poster}" alt="" class="film-card__poster">
           <p class="film-card__description">${this._description}</p>
           <a class="film-card__comments">${this._comments.length} comments</a>
         </article>`;

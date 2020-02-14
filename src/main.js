@@ -29,6 +29,8 @@ const toggleScreenHandler = (screen) => {
 api.getMovies()
   .then((movies) => {
     moviesModel.movies = movies;
+    console.log(movies)
+
     pageController.render();
 
     const userProfile = new UserProfile(getMoviesByFilter(moviesModel.allMovies, FilterType.HISTORY).length);
